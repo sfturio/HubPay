@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,51 +12,51 @@
       <div class="brand-icon">C</div>
       <div>
         <h1>HUBPAY CONSOLE</h1>
-        <p>CORE ENGINE v2.1 // EDITORIAL EDITION</p>
+        <p>CORE ENGINE v2.1 // EDIÇÃO EDITORIAL</p>
       </div>
     </div>
-    <div class="status-pill">CONNECTED</div>
+    <div class="status-pill">CONECTADO</div>
   </header>
 
   <main class="page-grid">
     <aside class="left-stack">
       <section class="panel">
-        <h2>Connection Configuration</h2>
-        <label>API BASE URL<input id="apiBaseUrl" type="text" placeholder="https://api.hubpay.io/v2" /></label>
-        <label>MERCHANT ID<input id="merchantId" type="text" placeholder="mid_live_xxxxxxxx" /></label>
-        <label>SECRET API KEY<input id="apiKey" type="text" placeholder="sk_test_..." /></label>
+        <h2>Configuração de Conexão</h2>
+        <label>URL BASE DA API<input id="apiBaseUrl" type="text" placeholder="http://localhost:5201" /></label>
+        <label>ID DO MERCHANT<input id="merchantId" type="text" placeholder="mid_live_xxxxxxxx" /></label>
+        <label>CHAVE SECRETA DA API<input id="apiKey" type="text" placeholder="sk_test_..." /></label>
         <div class="row-btn">
-          <button id="saveConnection" class="btn btn-primary" type="button">Save Session</button>
-          <button id="clearConnection" class="btn btn-light" type="button">Clear</button>
+          <button id="saveConnection" class="btn btn-primary" type="button">Salvar Sessão</button>
+          <button id="clearConnection" class="btn btn-light" type="button">Limpar</button>
         </div>
       </section>
 
       <section class="panel">
-        <h2>Merchant Registry</h2>
+        <h2>Cadastro de Merchant</h2>
         <form id="createMerchantForm" class="stack-gap">
-          <label>BUSINESS NAME<input id="merchantName" required /></label>
+          <label>NOME DO NEGÓCIO<input id="merchantName" required /></label>
           <div class="grid-two">
-            <label>DOCUMENT<input id="merchantDocument" required placeholder="CPF/CNPJ" /></label>
-            <label>EMAIL<input id="merchantEmail" type="email" required /></label>
+            <label>DOCUMENTO<input id="merchantDocument" required placeholder="CPF/CNPJ" /></label>
+            <label>E-MAIL<input id="merchantEmail" type="email" required /></label>
           </div>
           <div class="row-btn">
-            <button class="btn btn-dark" type="submit">Create Merchant</button>
-            <button id="listMerchants" class="btn btn-light" type="button">Refresh</button>
+            <button class="btn btn-dark" type="submit">Criar Merchant</button>
+            <button id="listMerchants" class="btn btn-light" type="button">Atualizar</button>
           </div>
           <div class="row-btn">
-            <button id="generateApiKey" class="btn btn-soft" type="button">Generate Key</button>
-            <button class="btn btn-danger" form="revokeApiKeyForm" type="submit">Revoke Key</button>
+            <button id="generateApiKey" class="btn btn-soft" type="button">Gerar Chave</button>
+            <button class="btn btn-danger" form="revokeApiKeyForm" type="submit">Revogar Chave</button>
           </div>
         </form>
         <form id="revokeApiKeyForm" class="stack-gap mt-8">
-          <input id="revokeApiKeyInput" placeholder="key to revoke" required />
+          <input id="revokeApiKeyInput" placeholder="chave para revogar" required />
         </form>
         <pre id="merchantsOutput" class="json-box"></pre>
       </section>
 
       <section class="panel">
-        <h2>Event Timeline</h2>
-        <pre id="paymentEventsOutput" class="output timeline-box">Select a payment and click "Events" to see timeline.</pre>
+        <h2>Linha do Tempo</h2>
+        <pre id="paymentEventsOutput" class="output timeline-box">Selecione um pagamento e clique em "Eventos" para ver a linha do tempo.</pre>
       </section>
 
       <section class="panel">
@@ -65,55 +65,55 @@
           <input id="webhookUrl" type="url" placeholder="https://..." required />
           <button class="btn btn-primary square" type="submit">+</button>
         </form>
-        <button id="listWebhooks" class="btn btn-light full" type="button">Refresh Webhooks</button>
+        <button id="listWebhooks" class="btn btn-light full" type="button">Atualizar Webhooks</button>
         <div id="webhooksOutput" class="table-wrap"></div>
       </section>
     </aside>
 
     <section class="right-stack">
       <section class="payment-hero">
-        <h2>New Payment Transaction</h2>
+        <h2>Nova Transação de Pagamento</h2>
         <div class="payment-grid">
           <form id="createPaymentForm" class="stack-gap">
             <div class="grid-two">
-              <label>CUSTOMER ID<input id="paymentCustomerId" required placeholder="cus_98234..." /></label>
-              <label>IDEMPOTENCY-KEY<input id="idempotencyKey" placeholder="uuid-v4-standard" /></label>
+              <label>ID DO CLIENTE<input id="paymentCustomerId" required placeholder="cus_98234..." /></label>
+              <label>IDEMPOTENCY-KEY<input id="idempotencyKey" placeholder="uuid-v4" /></label>
             </div>
             <div class="grid-three">
-              <label>AMOUNT<input id="paymentAmount" type="number" step="0.01" min="0.01" required /></label>
-              <label>CURRENCY<input id="paymentCurrency" value="BRL" required /></label>
-              <label>METHOD
+              <label>VALOR TOTAL (DINHEIRO)<input id="paymentAmount" type="number" step="0.01" min="0.01" placeholder="ex.: 49.90" required /></label>
+              <label>MOEDA<select id="paymentCurrency" required><option value="BRL" selected>BRL</option><option value="USD">USD</option><option value="EUR">EUR</option></select></label>
+              <label>MÉTODO
                 <select id="paymentMethod">
-                  <option value="1">Credit</option>
+                  <option value="1">Cartão de Crédito</option>
                   <option value="2">Pix</option>
                   <option value="3">Boleto</option>
                 </select>
               </label>
             </div>
-            <label>DESCRIPTION<input id="paymentDescription" placeholder="Product or service details" required /></label>
+            <label>DESCRIÇÃO (O QUE ESTÁ SENDO COBRADO)<input id="paymentDescription" placeholder="ex.: camisa + frete" required /></label>
           </form>
-          <button form="createPaymentForm" class="execute-btn" type="submit">EXECUTE PAYMENT</button>
+          <button form="createPaymentForm" class="execute-btn" type="submit">EXECUTAR PAGAMENTO</button>
         </div>
       </section>
 
       <section class="panel panel-table">
         <div class="table-header">
-          <h2>Live Transactions</h2>
-          <div class="stream">STREAMING...</div>
+          <h2>Transações em Tempo Real</h2>
+          <div class="stream">TRANSMITINDO...</div>
         </div>
         <div class="toolbar">
-          <button id="listPayments" class="btn btn-light" type="button">Refresh Payments</button>
+          <button id="listPayments" class="btn btn-light" type="button">Atualizar Pagamentos</button>
         </div>
         <div id="paymentsOutput" class="table-wrap"></div>
       </section>
 
       <section class="panel panel-customer">
-        <h2>Customer Quick Create</h2>
+        <h2>Cadastro Rápido de Cliente</h2>
         <form id="createCustomerForm" class="grid-three">
-          <label>NAME<input id="customerName" required /></label>
-          <label>DOCUMENT<input id="customerDocument" required /></label>
-          <label>EMAIL<input id="customerEmail" type="email" required /></label>
-          <button class="btn btn-dark" type="submit">Create Customer</button>
+          <label>NOME<input id="customerName" required /></label>
+          <label>DOCUMENTO<input id="customerDocument" required /></label>
+          <label>E-MAIL<input id="customerEmail" type="email" required /></label>
+          <button class="btn btn-dark" type="submit">Criar Cliente</button>
         </form>
         <pre id="customersOutput" class="output"></pre>
       </section>
@@ -121,7 +121,7 @@
       <section class="terminal">
         <div class="terminal-head">
           <span></span><span></span><span></span>
-          <p>HUBPAY-SESSION-CONSOLE@LOCAL: ~ /ACTIVITY-LOG</p>
+          <p>HUBPAY-CONSOLE@LOCAL: ~ /LOG-DE-ATIVIDADE</p>
         </div>
         <pre id="activityOutput" class="output output-log"></pre>
       </section>

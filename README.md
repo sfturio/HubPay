@@ -132,3 +132,9 @@ It supports end-to-end flows for merchants, customers, payments, events, and web
 - Expanded tests for transitions/idempotency/webhooks
 - Background webhook delivery with retries
 - Structured observability and rate limiting
+
+## Deploy
+- Guia de deploy: docs/DEPLOY.md`r
+- Dockerfile de produção: src/HubPay.API/Dockerfile`r
+- Compose local/servidor: docker-compose.yml`r
+

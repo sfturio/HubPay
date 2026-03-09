@@ -288,6 +288,9 @@ select:focus-visible {
   min-height: 44px;
   max-height: 230px;
   overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   font-family: Consolas, "Courier New", monospace;
   font-size: 0.8rem;
 }
@@ -490,4 +493,84 @@ tr:last-child td {
   .row-btn {
     grid-template-columns: 1fr;
   }
+}
+
+
+select option {
+  color: #111827;
+  background: #ffffff;
+}
+
+.payment-hero select option {
+  color: #111827;
+  background: #ffffff;
+}
+
+/* Payments table action layout */
+#paymentsOutput td:last-child {
+  min-width: 220px;
+}
+
+#paymentsOutput .actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(96px, 1fr));
+  gap: 6px;
+  align-items: stretch;
+}
+
+#paymentsOutput .actions .btn {
+  padding: 8px 10px;
+  font-size: 0.68rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+#paymentsOutput .actions .btn-primary {
+  grid-column: 1 / -1;
+}
+
+/* Semantic colors for payment actions */
+#paymentsOutput .actions .btn[data-action="authorize"] {
+  background: #e8f0ff;
+  color: #1d4ed8;
+  border: 1px solid #c7d9ff;
+}
+#paymentsOutput .actions .btn[data-action="authorize"]:hover {
+  background: #dce9ff;
+}
+
+#paymentsOutput .actions .btn[data-action="markPaid"] {
+  background: #e7f8ee;
+  color: #166534;
+  border: 1px solid #bfe9cf;
+}
+#paymentsOutput .actions .btn[data-action="markPaid"]:hover {
+  background: #d9f3e4;
+}
+
+#paymentsOutput .actions .btn[data-action="refuse"] {
+  background: #ffe8e6;
+  color: #b42318;
+  border: 1px solid #f9c7c2;
+}
+#paymentsOutput .actions .btn[data-action="refuse"]:hover {
+  background: #ffdcd8;
+}
+
+#paymentsOutput .actions .btn[data-action="cancel"] {
+  background: #f1f3f7;
+  color: #475467;
+  border: 1px solid #d9deea;
+}
+#paymentsOutput .actions .btn[data-action="cancel"]:hover {
+  background: #e7ebf1;
+}
+
+#paymentsOutput .actions .btn[data-action="events"] {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid transparent;
+}
+#paymentsOutput .actions .btn[data-action="events"]:hover {
+  background: var(--primary-hover);
 }

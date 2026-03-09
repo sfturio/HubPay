@@ -3,7 +3,9 @@ using HubPay.API.Endpoints;
 using HubPay.API.Middleware;
 using HubPay.Application;
 using HubPay.Infrastructure;
+using HubPay.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+}
+
+// Portfolio-friendly startup: ensure database schema is up-to-date automatically.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<HubPayDbContext>();
+    db.Database.Migrate();
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

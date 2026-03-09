@@ -26,7 +26,7 @@ function saveConnection() {
   localStorage.setItem("hubpay.baseUrl", state.baseUrl);
   localStorage.setItem("hubpay.merchantId", state.merchantId);
   localStorage.setItem("hubpay.apiKey", state.apiKey);
-  log("Connection saved.");
+  log("Conexao salva.");
   toast("Sessao salva", "success");
 }
 
@@ -38,7 +38,7 @@ function clearConnection() {
   state.merchantId = "";
   state.apiKey = "";
   bootstrapConnectionFields();
-  log("Connection cleared.");
+  log("Conexao limpa.");
   toast("Sessao limpa", "info");
 }
 
@@ -50,7 +50,16 @@ function getHeaders(extra = {}) {
 
 async function api(path, options = {}) {
   saveConnection();
-  const response = await fetch(`${state.baseUrl}${path}`, options);
+
+  const requestOptions = {
+    ...options,
+    headers: {
+      ...getHeaders(),
+      ...(options.headers || {})
+    }
+  };
+
+  const response = await fetch(`${state.baseUrl}${path}`, requestOptions);
   const contentType = response.headers.get("content-type") || "";
   const body = contentType.includes("application/json")
     ? await response.json().catch(() => null)
@@ -71,7 +80,6 @@ function log(message) {
 
 function toast(message, type = "info") {
   const node = document.createElement("div");
-  node.className = `hubpay-toast ${type}`;
   node.textContent = message;
   Object.assign(node.style, {
     position: "fixed",
@@ -86,31 +94,17 @@ function toast(message, type = "info") {
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: ".06em",
-    boxShadow: "0 10px 24px rgba(0,0,0,.2)",
-    transform: "translateY(-8px)",
-    opacity: "0",
-    transition: "all .18s ease"
+    boxShadow: "0 10px 24px rgba(0,0,0,.2)"
   });
 
   document.body.appendChild(node);
-  requestAnimationFrame(() => {
-    node.style.transform = "translateY(0)";
-    node.style.opacity = "1";
-  });
-
-  setTimeout(() => {
-    node.style.transform = "translateY(-8px)";
-    node.style.opacity = "0";
-    setTimeout(() => node.remove(), 180);
-  }, 1800);
+  setTimeout(() => node.remove(), 1800);
 }
 
-function setLoading(button, isLoading, loadingText = "Working...") {
+function setLoading(button, isLoading, loadingText = "Processando...") {
   if (!button) return;
   if (!button.dataset.originalText) button.dataset.originalText = button.textContent;
   button.disabled = isLoading;
-  button.style.opacity = isLoading ? ".75" : "1";
-  button.style.cursor = isLoading ? "wait" : "pointer";
   button.textContent = isLoading ? loadingText : button.dataset.originalText;
 }
 
@@ -119,9 +113,7 @@ function renderJson(targetId, data) {
 }
 
 function requireMerchantId() {
-  if (!state.merchantId) {
-    throw new Error("Merchant ID is required in Connection.");
-  }
+  if (!state.merchantId) throw new Error("ID do merchant e obrigatorio na conexao.");
 }
 
 function escapeHtml(text) {
@@ -131,6 +123,21 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function renderCardError(targetId, title, detail) {
+  const target = $(targetId);
+  if (!target) return;
+  target.innerHTML = `
+    <div style="padding:12px;border:1px solid #f6c7c1;background:#fff3f2;border-radius:10px;color:#912018;">
+      <strong style="display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;">${escapeHtml(title)}</strong>
+      <span style="font-size:.86rem;">${escapeHtml(detail)}</span>
+    </div>
+  `;
+}
+
+function authHint() {
+  return "Nao autorizado. Verifique Merchant ID + API Key e clique em Salvar Sessao.";
 }
 
 function statusClass(status) {
@@ -162,28 +169,23 @@ async function runAction(button, fn, loadingText) {
 async function createMerchant(e) {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector("button[type='submit']");
-
   await runAction(button, async () => {
-    const body = {
-      name: $("merchantName").value.trim(),
-      document: $("merchantDocument").value.trim(),
-      email: $("merchantEmail").value.trim()
-    };
-
     const merchant = await api("/merchants/", {
       method: "POST",
-      headers: getHeaders(),
-      body: JSON.stringify(body)
+      body: JSON.stringify({
+        name: $("merchantName").value.trim(),
+        document: $("merchantDocument").value.trim(),
+        email: $("merchantEmail").value.trim()
+      })
     });
 
     state.merchantId = merchant.id;
     ui.merchantId.value = merchant.id;
     saveConnection();
-
     renderJson("merchantsOutput", merchant);
-    log(`Merchant created: ${merchant.id}`);
+    log(`Merchant criado: ${merchant.id}`);
     toast("Merchant criado", "success");
-  }, "Creating...");
+  }, "Criando...");
 }
 
 async function listMerchants() {
@@ -191,75 +193,65 @@ async function listMerchants() {
   await runAction(button, async () => {
     const merchants = await api("/merchants/");
     renderJson("merchantsOutput", merchants);
-    log(`Loaded ${merchants.length} merchants.`);
-  }, "Refreshing...");
+    log(`Merchants carregados: ${merchants.length}.`);
+  }, "Atualizando...");
 }
 
 async function generateApiKey() {
   const button = $("generateApiKey");
   await runAction(button, async () => {
     requireMerchantId();
-    const response = await api(`/merchants/${state.merchantId}/api-keys`, {
-      method: "POST",
-      headers: getHeaders()
-    });
+    const response = await api(`/merchants/${state.merchantId}/api-keys`, { method: "POST" });
     if (response?.key) {
       state.apiKey = response.key;
       ui.apiKey.value = response.key;
       saveConnection();
     }
     renderJson("merchantsOutput", response);
-    log("API key generated and saved in session.");
+    log("API key gerada e salva na sessao.");
     toast("API key gerada", "success");
-  }, "Generating...");
+  }, "Gerando...");
 }
 
 async function revokeApiKey(e) {
   e.preventDefault();
   const button = e.submitter || e.target.closest("section")?.querySelector(".btn-danger");
-
   await runAction(button, async () => {
     requireMerchantId();
-    const key = $("revokeApiKeyInput").value.trim();
     await api(`/merchants/${state.merchantId}/api-keys/revoke`, {
       method: "POST",
-      headers: getHeaders(),
-      body: JSON.stringify({ key })
+      body: JSON.stringify({ key: $("revokeApiKeyInput").value.trim() })
     });
-    log("API key revoked.");
+    log("API key revogada.");
     toast("API key revogada", "success");
-  }, "Revoking...");
+  }, "Revogando...");
 }
 
 async function createCustomer(e) {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector("button[type='submit']");
-
   await runAction(button, async () => {
     const customer = await api("/customers/", {
       method: "POST",
-      headers: getHeaders(),
       body: JSON.stringify({
         name: $("customerName").value.trim(),
         document: $("customerDocument").value.trim(),
         email: $("customerEmail").value.trim()
       })
     });
-
     renderJson("customersOutput", customer);
     $("paymentCustomerId").value = customer.id;
-    log(`Customer created: ${customer.id}`);
+    log(`Cliente criado: ${customer.id}`);
     toast("Cliente criado", "success");
-  }, "Creating...");
+  }, "Criando...");
 }
 
 async function createPayment(e) {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector("button[type='submit']");
-
   await runAction(button, async () => {
     const idempotencyKey = $("idempotencyKey").value.trim();
-    const headers = getHeaders();
+    const headers = {};
     if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
 
     const payment = await api("/payments/", {
@@ -274,15 +266,16 @@ async function createPayment(e) {
       })
     });
 
-    log(`Payment created: ${payment.id}`);
+    log(`Pagamento criado: ${payment.id}`);
     toast("Pagamento criado", "success");
     await listPayments();
-  }, "Executing...");
+  }, "Executando...");
 }
 
 async function listPayments() {
   const button = $("listPayments");
-  await runAction(button, async () => {
+  setLoading(button, true, "Atualizando...");
+  try {
     const payments = await api("/payments/");
     const rows = payments.map((p) => `
       <tr>
@@ -293,11 +286,11 @@ async function listPayments() {
         <td>${escapeHtml(p.description)}</td>
         <td>
           <div class="actions">
-            <button class="btn btn-light" data-action="authorize" data-id="${p.id}">Authorize</button>
-            <button class="btn btn-light" data-action="capture" data-id="${p.id}">Capture</button>
-            <button class="btn btn-light" data-action="refuse" data-id="${p.id}">Refuse</button>
-            <button class="btn btn-light" data-action="cancel" data-id="${p.id}">Cancel</button>
-            <button class="btn btn-primary" data-action="events" data-id="${p.id}">Events</button>
+            <button class="btn btn-light" data-action="authorize" data-id="${p.id}">Autorizar</button>
+            <button class="btn btn-light" data-action="markPaid" data-id="${p.id}">Marcar como Pago</button>
+            <button class="btn btn-light" data-action="refuse" data-id="${p.id}">Recusar</button>
+            <button class="btn btn-light" data-action="cancel" data-id="${p.id}">Cancelar</button>
+            <button class="btn btn-primary" data-action="events" data-id="${p.id}">Eventos</button>
           </div>
         </td>
       </tr>
@@ -307,15 +300,23 @@ async function listPayments() {
       <table>
         <thead>
           <tr>
-            <th>ID</th><th>Status</th><th>Amount</th><th>Method</th><th>Description</th><th>Actions</th>
+            <th>ID</th><th>Status</th><th>Valor</th><th>Metodo</th><th>Descricao</th><th>Acoes</th>
           </tr>
         </thead>
-        <tbody>${rows || '<tr><td colspan="6">No payments yet.</td></tr>'}</tbody>
+        <tbody>${rows || '<tr><td colspan="6">Nenhum pagamento encontrado.</td></tr>'}</tbody>
       </table>
     `;
 
-    log(`Loaded ${payments.length} payments.`);
-  }, "Refreshing...");
+    log(`Pagamentos carregados: ${payments.length}.`);
+  } catch (err) {
+    if (String(err.message).startsWith("401")) {
+      renderCardError("paymentsOutput", "Autenticacao necessaria", authHint());
+    }
+    log(err.message);
+    toast("Erro ao listar pagamentos", "error");
+  } finally {
+    setLoading(button, false);
+  }
 }
 
 async function paymentAction(action, id, button) {
@@ -323,44 +324,31 @@ async function paymentAction(action, id, button) {
     if (action === "events") {
       const events = await api(`/payments/${id}/events`);
       renderJson("paymentEventsOutput", events);
-      log(`Loaded ${events.length} events for payment ${id}.`);
-      toast("Timeline atualizada", "info");
+      log(`Eventos carregados para o pagamento ${id}: ${events.length}.`);
+      toast("Linha do tempo atualizada", "info");
       return;
     }
 
-    const map = {
-      authorize: "authorize",
-      capture: "capture",
-      refuse: "refuse",
-      cancel: "cancel"
-    };
-
-    await api(`/payments/${id}/${map[action]}`, {
-      method: "POST",
-      headers: getHeaders()
-    });
-
-    log(`Payment ${id} ${action} executed.`);
-    toast(`Pagamento ${action}`, "success");
+    const map = { authorize: "authorize", markPaid: "capture", refuse: "refuse", cancel: "cancel" };
+    await api(`/payments/${id}/${map[action]}`, { method: "POST" });
+    log(`Pagamento ${id}: acao '${action}' executada.`);
+    toast("Status atualizado", "success");
     await listPayments();
-  }, "Working...");
+  }, "Processando...");
 }
 
 async function createWebhook(e) {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector("button[type='submit']");
-
   await runAction(button, async () => {
     const webhook = await api("/webhooks/", {
       method: "POST",
-      headers: getHeaders(),
       body: JSON.stringify({ url: $("webhookUrl").value.trim() })
     });
-
-    log(`Webhook created: ${webhook.id}`);
+    log(`Webhook criado: ${webhook.id}`);
     toast("Webhook criado", "success");
     await listWebhooks();
-  }, "Adding...");
+  }, "Criando...");
 }
 
 async function listWebhooks() {
@@ -371,29 +359,29 @@ async function listWebhooks() {
       <tr>
         <td><code>${escapeHtml(w.id)}</code></td>
         <td>${escapeHtml(w.url)}</td>
-        <td>${w.isActive ? statusBadge("ACTIVE") : statusBadge("DISABLED")}</td>
-        <td><button class="btn btn-danger" data-action="disable-webhook" data-id="${w.id}">Disable</button></td>
+        <td>${w.isActive ? statusBadge("ATIVO") : statusBadge("DESATIVADO")}</td>
+        <td><button class="btn btn-danger" data-action="disable-webhook" data-id="${w.id}">Desativar</button></td>
       </tr>
     `).join("");
 
     $("webhooksOutput").innerHTML = `
       <table>
-        <thead><tr><th>ID</th><th>URL</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody>${rows || '<tr><td colspan="4">No webhooks yet.</td></tr>'}</tbody>
+        <thead><tr><th>ID</th><th>URL</th><th>Status</th><th>Acao</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4">Nenhum webhook encontrado.</td></tr>'}</tbody>
       </table>
     `;
 
-    log(`Loaded ${webhooks.length} webhooks.`);
-  }, "Refreshing...");
+    log(`Webhooks carregados: ${webhooks.length}.`);
+  }, "Atualizando...");
 }
 
 async function disableWebhook(id, button) {
   await runAction(button, async () => {
-    await api(`/webhooks/${id}/disable`, { method: "POST", headers: getHeaders() });
-    log(`Webhook disabled: ${id}`);
+    await api(`/webhooks/${id}/disable`, { method: "POST" });
+    log(`Webhook desativado: ${id}`);
     toast("Webhook desativado", "success");
     await listWebhooks();
-  }, "Disabling...");
+  }, "Desativando...");
 }
 
 function bindEvents() {
@@ -426,5 +414,5 @@ function bindEvents() {
 
 bootstrapConnectionFields();
 bindEvents();
-log("HubPay Console ready.");
+log("HubPay Console iniciado.");
 toast("Console pronto", "info");

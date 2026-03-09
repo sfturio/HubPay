@@ -30,6 +30,12 @@ public class MerchantService
         return merchant is null ? null : ToResponse(merchant);
     }
 
+    public async Task<IReadOnlyList<MerchantResponse>> ListAsync()
+    {
+        var merchants = await _merchantRepository.ListAsync();
+        return merchants.Select(ToResponse).ToList();
+    }
+
     private static MerchantResponse ToResponse(Merchant merchant)
     {
         return new MerchantResponse(

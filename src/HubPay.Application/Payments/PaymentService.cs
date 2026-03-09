@@ -85,6 +85,30 @@ public class PaymentService
         return payment is null ? null : ToResponse(payment);
     }
 
+    public async Task<IReadOnlyList<PaymentResponse>> ListByMerchantAsync(Guid merchantId)
+    {
+        var payments = await _paymentRepository.ListByMerchantAsync(merchantId);
+        return payments.Select(ToResponse).ToList();
+    }
+
+    public async Task<IReadOnlyList<PaymentEventResponse>?> ListEventsAsync(Guid merchantId, Guid paymentId)
+    {
+        var payment = await _paymentRepository.GetByIdForMerchantAsync(paymentId, merchantId);
+        if (payment is null)
+            return null;
+
+        var events = await _paymentEventRepository.ListByPaymentAsync(paymentId);
+        return events
+            .Select(e => new PaymentEventResponse(
+                e.Id,
+                e.PaymentId,
+                e.PreviousStatus.ToString(),
+                e.NewStatus.ToString(),
+                e.Description,
+                e.CreatedAt))
+            .ToList();
+    }
+
     public async Task<PaymentResponse?> AuthorizeAsync(Guid merchantId, Guid paymentId)
     {
         var payment = await _paymentRepository.GetByIdForMerchantAsync(paymentId, merchantId);

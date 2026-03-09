@@ -1,6 +1,7 @@
 using HubPay.Domain.Entities;
 using HubPay.Domain.Repositories;
 using HubPay.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace HubPay.Infrastructure.Repositories;
 
@@ -18,5 +19,12 @@ public class PaymentEventRepository : IPaymentEventRepository
         await _context.PaymentEvents.AddAsync(paymentEvent);
         await _context.SaveChangesAsync();
     }
-}
 
+    public async Task<IReadOnlyList<PaymentEvent>> ListByPaymentAsync(Guid paymentId)
+    {
+        return await _context.PaymentEvents
+            .Where(e => e.PaymentId == paymentId)
+            .OrderByDescending(e => e.CreatedAt)
+            .ToListAsync();
+    }
+}

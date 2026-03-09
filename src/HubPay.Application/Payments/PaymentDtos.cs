@@ -22,3 +22,10 @@ public record PaymentResponse(
     DateTime CreatedAt,
     DateTime UpdatedAt);
 
+public record PaymentEventResponse(
+    Guid Id,
+    Guid PaymentId,
+    string PreviousStatus,
+    string NewStatus,
+    string? Description,
+    DateTime CreatedAt);

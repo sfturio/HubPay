@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 using HubPay.Domain.Entities;
 using HubPay.Domain.Repositories;
 
@@ -24,10 +23,10 @@ public class ApiKeyService
         return new GenerateApiKeyResponse(key);
     }
 
-    public async Task<bool> RevokeAsync(string key)
+    public async Task<bool> RevokeAsync(Guid merchantId, string key)
     {
         var apiKey = await _apiKeyRepository.GetActiveByKeyAsync(key);
-        if (apiKey is null)
+        if (apiKey is null || apiKey.MerchantId != merchantId)
             return false;
 
         apiKey.Revoke();
@@ -45,4 +44,3 @@ public class ApiKeyService
             .TrimEnd('=');
     }
 }
-

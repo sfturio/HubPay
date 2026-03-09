@@ -19,6 +19,12 @@ public static class EndpointMappingExtensions
             return Results.Created($"/merchants/{result.Id}", result);
         });
 
+        merchants.MapGet("/", async (MerchantService service) =>
+        {
+            var list = await service.ListAsync();
+            return Results.Ok(list);
+        });
+
         merchants.MapGet("/{id:guid}", async (Guid id, MerchantService service) =>
         {
             var result = await service.GetByIdAsync(id);
@@ -39,6 +45,16 @@ public static class EndpointMappingExtensions
             var response = await apiKeyService.GenerateAsync(id);
             return Results.Ok(response);
         });
+
+        merchants.MapPost("/{id:guid}/api-keys/revoke", async (HttpContext context, Guid id, RevokeApiKeyRequest request, ApiKeyService apiKeyService) =>
+        {
+            var authenticatedMerchantId = GetMerchantId(context);
+            if (authenticatedMerchantId != id)
+                return Results.Forbid();
+
+            var revoked = await apiKeyService.RevokeAsync(id, request.Key);
+            return revoked ? Results.NoContent() : Results.NotFound();
+        }).RequireAuthorization();
 
         var customers = app.MapGroup("/customers").RequireAuthorization();
         customers.MapPost("/", async (CreateCustomerRequest request, CustomerService service) =>
@@ -70,10 +86,24 @@ public static class EndpointMappingExtensions
                 : Results.StatusCode(statusCode);
         });
 
+        payments.MapGet("/", async (HttpContext httpContext, PaymentService service) =>
+        {
+            var merchantId = GetMerchantId(httpContext);
+            var result = await service.ListByMerchantAsync(merchantId);
+            return Results.Ok(result);
+        });
+
         payments.MapGet("/{id:guid}", async (HttpContext httpContext, Guid id, PaymentService service) =>
         {
             var merchantId = GetMerchantId(httpContext);
             var result = await service.GetByIdAsync(merchantId, id);
+            return result is null ? Results.NotFound() : Results.Ok(result);
+        });
+
+        payments.MapGet("/{id:guid}/events", async (HttpContext httpContext, Guid id, PaymentService service) =>
+        {
+            var merchantId = GetMerchantId(httpContext);
+            var result = await service.ListEventsAsync(merchantId, id);
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 

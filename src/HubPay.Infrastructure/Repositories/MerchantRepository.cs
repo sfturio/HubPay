@@ -20,10 +20,16 @@ public class MerchantRepository : IMerchantRepository
             .SingleOrDefaultAsync(m => m.Id == id);
     }
 
+    public async Task<IReadOnlyList<Merchant>> ListAsync()
+    {
+        return await _context.Merchants
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Merchant merchant)
     {
         await _context.Merchants.AddAsync(merchant);
         await _context.SaveChangesAsync();
     }
 }
-

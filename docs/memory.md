@@ -1,21 +1,21 @@
-# HubPay Memory (Atualizado em 2026-03-09)
+# HubPay Memory (Updated on 2026-03-09)
 
-## Objetivo do projeto
-HubPay e um mini payment gateway em C# para portfolio, com foco em:
+## Project Goal
+HubPay is a portfolio mini payment gateway in C# focused on:
 - Clean Architecture (Domain, Application, Infrastructure, API)
-- DDD leve (regras no dominio)
-- API REST realista
+- DDD-lite with business rules in Domain
+- Realistic REST API
 - PostgreSQL + EF Core
-- API Key auth, idempotencia e webhooks
+- API key auth, idempotency, and webhook eventing
 
-## Stack atual
+## Current Stack
 - .NET 10 / ASP.NET Core 10 (Minimal APIs)
 - C#
-- EF Core + Npgsql
+- EF Core 10 + Npgsql
 - xUnit
-- OpenAPI (ambiente de desenvolvimento)
+- OpenAPI (development)
 
-## Estrutura
+## Solution Structure
 - `src/HubPay.API`
 - `src/HubPay.Application`
 - `src/HubPay.Domain`
@@ -23,10 +23,10 @@ HubPay e um mini payment gateway em C# para portfolio, com foco em:
 - `tests/HubPay.UnitTests`
 - `tests/HubPay.IntegrationTests`
 
-## Implementado ate agora
+## What Is Implemented
 
-### Dominio
-- Entidades principais:
+### Domain
+- Entities:
   - Merchant
   - ApiKey
   - Customer
@@ -38,74 +38,123 @@ HubPay e um mini payment gateway em C# para portfolio, com foco em:
 - Value Objects:
   - Money
   - Email
-  - Document (implementado com normalizacao e validacao por quantidade de digitos)
+  - Document (normalized digits, validates 11/14 digits)
 - Enums:
   - MerchantStatus
   - PaymentStatus
   - PaymentMethod
   - WebhookDeliveryStatus
-- Excecao de negocio:
+- Business exception:
   - DomainException
 
-### Regras de negocio
-- Payment inicia em `Pending`
-- Transicoes principais suportadas:
+### Core Business Rules
+- Payment starts as `Pending`
+- Supported transitions:
   - `Pending -> Authorized`
   - `Authorized -> Paid`
   - `Pending -> Refused`
-  - `Pending/Authorized -> Cancelled` (com bloqueio para `Paid`)
-- Alteracoes invalidas de estado lancam `DomainException`
-- Idempotencia por merchant + key (retorna resposta original se repetido)
-- Registro de eventos de pagamento e geracao de webhook events para webhooks ativos
+  - `Pending -> Cancelled`
+  - `Authorized -> Cancelled`
+- Invalid transitions throw `DomainException`
+- Idempotency is scoped by merchant + key
+- Payment status changes create `PaymentEvent` + webhook events for active webhooks
 
-### Application
-- Services implementados:
+### Application Layer
+- Services:
   - MerchantService
   - ApiKeyService
   - CustomerService
   - PaymentService
   - WebhookService
-- DTOs de request/response para cada feature
-- `PaymentService` atualizado para operar sempre com escopo de merchant nas consultas mutaveis e de leitura
+- DTOs for requests/responses
+- Merchant scoping enforced in payment reads/writes
+- Added use cases:
+  - List merchants
+  - List merchant payments
+  - List payment events
+  - Revoke API key (merchant-scoped)
 
-### Infrastructure
-- `HubPayDbContext` com DbSets das entidades principais
-- Configuracoes EF Core por entidade
-- Repositorios implementados para todas as interfaces de dominio
-- `PaymentRepository` com busca por `paymentId + merchantId`
-- `ApiKeyRepository` com verificacao de chave ativa por merchant
+### Infrastructure Layer
+- `HubPayDbContext` with all main DbSets
+- EF configurations for all entities
+- Repositories implemented for all domain interfaces
+- Payment lookup by `paymentId + merchantId`
+- API key active existence check by merchant
+- EF migration generated:
+  - `NormalizeDocumentValueObject`
 
-### API
-- Minimal APIs organizadas por grupos (`/merchants`, `/customers`, `/payments`, `/webhooks`)
-- Autenticacao por API key via `AuthenticationHandler` custom (`ApiKeyAuthenticationHandler`)
-- `UseAuthentication()` + `UseAuthorization()` no pipeline
-- Middleware global de excecao com resposta `application/problem+json`
-- Endpoints de pagamentos protegidos e com escopo do merchant autenticado
-- Endpoint de geracao de API key com regra de bootstrap inicial + protecao por merchant
+### API Layer
+- Minimal API groups:
+  - `/merchants`
+  - `/customers`
+  - `/payments`
+  - `/webhooks`
+- API key auth via `AuthenticationHandler` (`ApiKeyAuthenticationHandler`)
+- `UseAuthentication()` + `UseAuthorization()` pipeline
+- Global exception middleware returning `application/problem+json`
+- Security/ownership hardening:
+  - Merchant-scoped payment actions
+  - Bootstrap-safe API key generation
+  - Merchant-scoped API key revocation endpoint
 
-### Testes
-- Unit tests com validacoes essenciais de dominio:
-  - pagamento inicia como pending
-  - pagamento nao pode ser pago sem autorizacao
-  - money nao aceita zero/negativo
-- Integration test basico de auth (endpoint protegido retorna 401 sem API key)
-- Estado atual validado com sucesso em:
-  - `dotnet test HubPay.slnx`
+### Current Endpoints Available
+- Merchants:
+  - `POST /merchants`
+  - `GET /merchants`
+  - `GET /merchants/{id}`
+  - `POST /merchants/{id}/api-keys`
+  - `POST /merchants/{id}/api-keys/revoke`
+- Customers:
+  - `POST /customers`
+  - `GET /customers/{id}`
+- Payments:
+  - `POST /payments`
+  - `GET /payments`
+  - `GET /payments/{id}`
+  - `GET /payments/{id}/events`
+  - `POST /payments/{id}/authorize`
+  - `POST /payments/{id}/capture`
+  - `POST /payments/{id}/refuse`
+  - `POST /payments/{id}/cancel`
+- Webhooks:
+  - `POST /webhooks`
+  - `GET /webhooks`
+  - `POST /webhooks/{id}/disable`
 
-## Decisoes recentes importantes
-- Troca de middleware de auth manual por `AuthenticationHandler` nativo do ASP.NET Core
-- Inclusao de tratamento global centralizado de erros
-- Fortalecimento de isolamento multi-tenant por merchant nos endpoints/servico de pagamento
-- Padronizacao do `Document` como Value Object real no dominio
+### Frontend (Portfolio Console)
+- Built inside API static assets (`wwwroot`):
+  - `index.html`
+  - `styles.css`
+  - `app.js`
+- Design direction: editorial fintech style (inspired by Stitch reference)
+- Features:
+  - Connection/session panel (base URL, merchant ID, API key)
+  - Merchant create/list, key generate/revoke
+  - Customer create
+  - Payment create/list and status actions
+  - Payment event timeline
+  - Webhook create/list/disable
+  - Activity log + toasts + loading states
+  - Responsive layout with max page width constraint
 
-## Proximos passos (priorizados)
-1. Criar migration do EF Core para refletir as mudancas recentes de mapeamento (`Document` owned type e ajustes relacionados).
-2. Implementar endpoint/listagem de `PaymentEvents` por pagamento (com escopo de merchant).
-3. Adicionar testes de transicao de status restantes (authorize/refuse/cancel) e cenarios de idempotencia.
-4. Melhorar validacao de requests na borda da API (ex.: campos obrigatorios/tamanho) para erros mais previsiveis antes de chegar no dominio.
-5. Implementar logging estruturado de eventos chave (criacao de pagamento, mudanca de status, falha de webhook), sem expor segredos.
-6. Planejar processamento de envio real de webhooks (job/background worker + retentativas).
-7. Revisar politicas de seguranca complementares (rate limiting, hardening de headers e observabilidade basica).
+## Tooling/Operational Notes
+- Local .NET tool manifest added with `dotnet-ef` in project root (`dotnet-tools.json`)
+- `Microsoft.EntityFrameworkCore.Design` added to API startup project for migration tooling
+- `.gitignore` and `README.md` created
 
-## Nota operacional
-- Regras de desenvolvimento sao mantidas em `docs/rules.md` e devem ser seguidas em todas as proximas alteracoes.
+## Test Status
+- `dotnet build HubPay.slnx`: passing
+- `dotnet test HubPay.slnx`: passing
+  - Unit tests: domain essentials (3 passing)
+  - Integration tests: auth baseline (1 passing)
+
+## Next Prioritized Steps
+1. Add request validation at API boundary (required fields, formats, friendly 400s).
+2. Add pagination/filtering for merchants/payments list endpoints.
+3. Expand tests for full payment transitions + idempotency + webhook event registration.
+4. Add structured logging (payment creation, state changes, webhook failures).
+5. Implement actual webhook delivery worker with retries/backoff.
+6. Add rate limiting and basic health/observability endpoints.
+
+## Team Rule
+- Always follow `docs/rules.md` in future changes.

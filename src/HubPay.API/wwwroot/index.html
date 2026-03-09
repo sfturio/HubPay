@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HubPay Console</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="brand-wrap">
+      <div class="brand-icon">C</div>
+      <div>
+        <h1>HUBPAY CONSOLE</h1>
+        <p>CORE ENGINE v2.1 // EDITORIAL EDITION</p>
+      </div>
+    </div>
+    <div class="status-pill">CONNECTED</div>
+  </header>
+
+  <main class="page-grid">
+    <aside class="left-stack">
+      <section class="panel">
+        <h2>Connection Configuration</h2>
+        <label>API BASE URL<input id="apiBaseUrl" type="text" placeholder="https://api.hubpay.io/v2" /></label>
+        <label>MERCHANT ID<input id="merchantId" type="text" placeholder="mid_live_xxxxxxxx" /></label>
+        <label>SECRET API KEY<input id="apiKey" type="text" placeholder="sk_test_..." /></label>
+        <div class="row-btn">
+          <button id="saveConnection" class="btn btn-primary" type="button">Save Session</button>
+          <button id="clearConnection" class="btn btn-light" type="button">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Merchant Registry</h2>
+        <form id="createMerchantForm" class="stack-gap">
+          <label>BUSINESS NAME<input id="merchantName" required /></label>
+          <div class="grid-two">
+            <label>DOCUMENT<input id="merchantDocument" required placeholder="CPF/CNPJ" /></label>
+            <label>EMAIL<input id="merchantEmail" type="email" required /></label>
+          </div>
+          <div class="row-btn">
+            <button class="btn btn-dark" type="submit">Create Merchant</button>
+            <button id="listMerchants" class="btn btn-light" type="button">Refresh</button>
+          </div>
+          <div class="row-btn">
+            <button id="generateApiKey" class="btn btn-soft" type="button">Generate Key</button>
+            <button class="btn btn-danger" form="revokeApiKeyForm" type="submit">Revoke Key</button>
+          </div>
+        </form>
+        <form id="revokeApiKeyForm" class="stack-gap mt-8">
+          <input id="revokeApiKeyInput" placeholder="key to revoke" required />
+        </form>
+        <pre id="merchantsOutput" class="json-box"></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Event Timeline</h2>
+        <pre id="paymentEventsOutput" class="output timeline-box">Select a payment and click "Events" to see timeline.</pre>
+      </section>
+
+      <section class="panel">
+        <h2>Webhooks</h2>
+        <form id="createWebhookForm" class="webhook-row">
+          <input id="webhookUrl" type="url" placeholder="https://..." required />
+          <button class="btn btn-primary square" type="submit">+</button>
+        </form>
+        <button id="listWebhooks" class="btn btn-light full" type="button">Refresh Webhooks</button>
+        <div id="webhooksOutput" class="table-wrap"></div>
+      </section>
+    </aside>
+
+    <section class="right-stack">
+      <section class="payment-hero">
+        <h2>New Payment Transaction</h2>
+        <div class="payment-grid">
+          <form id="createPaymentForm" class="stack-gap">
+            <div class="grid-two">
+              <label>CUSTOMER ID<input id="paymentCustomerId" required placeholder="cus_98234..." /></label>
+              <label>IDEMPOTENCY-KEY<input id="idempotencyKey" placeholder="uuid-v4-standard" /></label>
+            </div>
+            <div class="grid-three">
+              <label>AMOUNT<input id="paymentAmount" type="number" step="0.01" min="0.01" required /></label>
+              <label>CURRENCY<input id="paymentCurrency" value="BRL" required /></label>
+              <label>METHOD
+                <select id="paymentMethod">
+                  <option value="1">Credit</option>
+                  <option value="2">Pix</option>
+                  <option value="3">Boleto</option>
+                </select>
+              </label>
+            </div>
+            <label>DESCRIPTION<input id="paymentDescription" placeholder="Product or service details" required /></label>
+          </form>
+          <button form="createPaymentForm" class="execute-btn" type="submit">EXECUTE PAYMENT</button>
+        </div>
+      </section>
+
+      <section class="panel panel-table">
+        <div class="table-header">
+          <h2>Live Transactions</h2>
+          <div class="stream">STREAMING...</div>
+        </div>
+        <div class="toolbar">
+          <button id="listPayments" class="btn btn-light" type="button">Refresh Payments</button>
+        </div>
+        <div id="paymentsOutput" class="table-wrap"></div>
+      </section>
+
+      <section class="panel panel-customer">
+        <h2>Customer Quick Create</h2>
+        <form id="createCustomerForm" class="grid-three">
+          <label>NAME<input id="customerName" required /></label>
+          <label>DOCUMENT<input id="customerDocument" required /></label>
+          <label>EMAIL<input id="customerEmail" type="email" required /></label>
+          <button class="btn btn-dark" type="submit">Create Customer</button>
+        </form>
+        <pre id="customersOutput" class="output"></pre>
+      </section>
+
+      <section class="terminal">
+        <div class="terminal-head">
+          <span></span><span></span><span></span>
+          <p>HUBPAY-SESSION-CONSOLE@LOCAL: ~ /ACTIVITY-LOG</p>
+        </div>
+        <pre id="activityOutput" class="output output-log"></pre>
+      </section>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

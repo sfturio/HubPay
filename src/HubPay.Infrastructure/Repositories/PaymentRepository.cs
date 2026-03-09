@@ -26,6 +26,14 @@ public class PaymentRepository : IPaymentRepository
             .SingleOrDefaultAsync(p => p.Id == id && p.MerchantId == merchantId);
     }
 
+    public async Task<IReadOnlyList<Payment>> ListByMerchantAsync(Guid merchantId)
+    {
+        return await _context.Payments
+            .Where(p => p.MerchantId == merchantId)
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Payment payment)
     {
         await _context.Payments.AddAsync(payment);

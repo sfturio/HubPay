@@ -1,0 +1,43 @@
+# Build artifacts
+[Bb]in/
+[Oo]bj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userprefs
+
+# IDE folders
+.vs/
+.vscode/
+.idea/
+
+# Test artifacts
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Local environment/config
+.env
+.env.*
+appsettings.Development.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# EF / local tools cache
+**/Migrations/*Snapshot.cs.tmp

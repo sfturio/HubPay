@@ -1,0 +1,6 @@
+@HubPay.API_HostAddress = http://localhost:5201
+
+GET {{HubPay.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

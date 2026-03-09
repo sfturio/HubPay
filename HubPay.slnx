@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HubPay.API/HubPay.API.csproj" />
+    <Project Path="src/HubPay.Application/HubPay.Application.csproj" />
+    <Project Path="src/HubPay.Domain/HubPay.Domain.csproj" />
+    <Project Path="src/HubPay.Infrastructure/HubPay.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HubPay.IntegrationTests/HubPay.IntegrationTests.csproj" />
+    <Project Path="tests/HubPay.UnitTests/HubPay.UnitTests.csproj" />
+  </Folder>
+</Solution>

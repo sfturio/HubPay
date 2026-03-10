@@ -6,6 +6,7 @@
       title: "HubPay Documentation",
       single: {
         "#menuToggle": "Menu",
+        "header nav a[href='#guides']": "Guias",
         "header nav a[href='#changelog']": "Changelog",
         "header nav a[href='#contact']": "Contato",
 
@@ -103,6 +104,7 @@
       title: "HubPay Documentation",
       single: {
         "#menuToggle": "Menu",
+        "header nav a[href='#guides']": "Guides",
         "header nav a[href='#changelog']": "Changelog",
         "header nav a[href='#contact']": "Contact",
 
@@ -275,6 +277,9 @@
     });
   }
 })();
+
+
+
 
 
 

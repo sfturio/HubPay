@@ -30,7 +30,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Swagger:Enabled"))
 {
     app.MapOpenApi();
     app.UseSwagger();
@@ -59,3 +59,4 @@ app.MapHubPayEndpoints();
 app.Run();
 
 public partial class Program;
+

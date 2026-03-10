@@ -71,7 +71,7 @@
           <h5 class="mb-3 text-xs uppercase tracking-wider text-slate-500 font-bold">Core Concepts</h5>
           <nav class="space-y-1 text-sm">
             <a href="#payment-flow" class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200/70">Payment Flow</a>
-            <a href="#authentication" class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200/70">Authentication</a>
+            <a href="#guides" class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200/70">Guides</a>`r`n            <a href="#authentication" class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200/70">Authentication</a>
             <a href="#idempotency" class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-200/70">Idempotency</a>
           </nav>
         </section>
@@ -163,6 +163,26 @@
           </div>
         </section>
 
+        <section id="guides" class="mb-20 scroll-mt-24">
+          <h2 id="guidesTitle" class="mb-4 text-3xl font-bold tracking-tight">Console Guides</h2>
+          <p id="guidesDescription" class="mb-8 text-slate-600">Guias visuais para os fluxos mais usados no console do HubPay.</p>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="mb-3 flex items-center justify-between">
+                <h3 id="merchantGuideTitle" class="text-sm font-bold uppercase tracking-wide text-primary">Guia de Cadastro de Merchant</h3>
+                <span class="rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">Guide</span>
+              </div>
+              <img src="./assets/merchantcad.gif" alt="Guia visual do cadastro de merchant no HubPay Console" class="h-auto w-full rounded-lg border border-slate-200 bg-white object-cover" loading="lazy" />
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="mb-3 flex items-center justify-between">
+                <h3 id="customerGuideTitle" class="text-sm font-bold uppercase tracking-wide text-primary">Guia de Cadastro de Cliente</h3>
+                <span class="rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">Guide</span>
+              </div>
+              <img src="./assets/clientcad.gif" alt="Guia visual do cadastro de cliente no HubPay Console" class="h-auto w-full rounded-lg border border-slate-200 bg-white object-cover" loading="lazy" />
+            </article>
+          </div>
+        </section>
         <section id="authentication" class="mb-20 scroll-mt-24">
           <h2 class="mb-4 text-3xl font-bold tracking-tight">Authentication</h2>
           <p class="mb-6 text-slate-600">HubPay utiliza autenticacao baseada em API key para identificar o merchant que realiza a requisicao. Cada requisicao deve incluir a chave no header x-api-key para acessar os endpoints da API.</p>
@@ -347,6 +367,9 @@
   <script src="./app.js" defer></script>
 </body>
 </html>
+
+
+
 
 
 

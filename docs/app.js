@@ -16,6 +16,7 @@
 
         "#leftSidebar section:nth-child(2) h5": "Conceitos Centrais",
         "#leftSidebar section:nth-child(2) a[href='#payment-flow']": "Fluxo de Pagamento",
+        "#leftSidebar section:nth-child(2) a[href='#guides']": "Guias",
         "#leftSidebar section:nth-child(2) a[href='#authentication']": "Autenticacao",
         "#leftSidebar section:nth-child(2) a[href='#idempotency']": "Idempotencia",
 
@@ -44,6 +45,11 @@
         "#payment-flow article:nth-child(1) p": "Pending e o estado inicial de um pagamento logo apos sua criacao. O pagamento foi registrado, mas ainda nao foi autorizado.",
         "#payment-flow article:nth-child(2) p": "Authorized indica que o pagamento foi aprovado e pode ser capturado. Esse estado representa uma autorizacao valida antes da conclusao do pagamento.",
         "#payment-flow article:nth-child(3) p": "Paid representa a conclusao do pagamento. Nesse estado o valor foi efetivamente capturado e o pagamento e considerado finalizado.",
+
+        "#guidesTitle": "Guias do Console",
+        "#guidesDescription": "Guias visuais para os fluxos mais usados no console do HubPay.",
+        "#merchantGuideTitle": "Guia de Cadastro de Merchant",
+        "#customerGuideTitle": "Guia de Cadastro de Cliente",
 
         "#authentication h2": "Autenticacao",
         "#authentication > p": "HubPay utiliza autenticacao baseada em API key para identificar o merchant que realiza a requisicao. Cada requisicao deve incluir a chave no header x-api-key para acessar os endpoints da API.",
@@ -107,6 +113,7 @@
 
         "#leftSidebar section:nth-child(2) h5": "Core Concepts",
         "#leftSidebar section:nth-child(2) a[href='#payment-flow']": "Payment Flow",
+        "#leftSidebar section:nth-child(2) a[href='#guides']": "Guides",
         "#leftSidebar section:nth-child(2) a[href='#authentication']": "Authentication",
         "#leftSidebar section:nth-child(2) a[href='#idempotency']": "Idempotency",
 
@@ -135,6 +142,11 @@
         "#payment-flow article:nth-child(1) p": "Pending is the initial payment state right after creation. The payment is registered but not yet authorized.",
         "#payment-flow article:nth-child(2) p": "Authorized means the payment is approved and can be captured. It represents a valid authorization before final settlement.",
         "#payment-flow article:nth-child(3) p": "Paid represents payment completion. In this state, funds were effectively captured and the payment is considered finalized.",
+
+        "#guidesTitle": "Console Guides",
+        "#guidesDescription": "Visual guides for the most common HubPay Console flows.",
+        "#merchantGuideTitle": "Merchant Registration Guide",
+        "#customerGuideTitle": "Customer Registration Guide",
 
         "#authentication h2": "Authentication",
         "#authentication > p": "HubPay uses API key authentication to identify the merchant making the request. Every request must include the key in the x-api-key header.",
@@ -263,6 +275,9 @@
     });
   }
 })();
+
+
+
 
 
 

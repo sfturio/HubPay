@@ -537,6 +537,20 @@ tr:last-child td {
   }
 }
 
+.app-footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 6px 20px 18px;
+}
+
+.app-footer p {
+  margin: 0;
+  color: #8a93a6;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-align: right;
+}
+
 
 select option {
   color: #111827;

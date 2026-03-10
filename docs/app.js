@@ -46,7 +46,7 @@
         "#payment-flow article:nth-child(3) p": "Paid representa a conclusao do pagamento. Nesse estado o valor foi efetivamente capturado e o pagamento e considerado finalizado.",
 
         "#authentication h2": "Autenticacao",
-        "#authentication > p": "HubPay utiliza autenticacao baseada em API key para identificar o merchant que realiza a requisicao. Cada requisicao deve incluir a chave no header Authorization para acessar os endpoints da API.",
+        "#authentication > p": "HubPay utiliza autenticacao baseada em API key para identificar o merchant que realiza a requisicao. Cada requisicao deve incluir a chave no header x-api-key para acessar os endpoints da API.",
         "#authentication .mb-4 .text-slate-500": "Header da Requisicao",
 
         "#idempotency h2": "Idempotencia",
@@ -59,8 +59,12 @@
         "#endpoints th:nth-child(3)": "Descricao",
         "#endpoints tbody tr:nth-child(1) td:nth-child(3)": "Cria um novo pagamento associado a um merchant e inicia o fluxo de processamento.",
         "#endpoints tbody tr:nth-child(2) td:nth-child(3)": "Retorna os detalhes de um pagamento especifico usando seu identificador.",
-        "#endpoints tbody tr:nth-child(3) td:nth-child(3)": "Lista pagamentos registrados para o merchant autenticado.",
-        "#endpoints tbody tr:nth-child(4) td:nth-child(3)": "Autoriza um pagamento previamente criado, movendo seu estado de Pending para Authorized.",
+        "#endpoints tbody tr:nth-child(3) td:nth-child(3)": "Lista pagamentos do merchant filtrando por status.",
+        "#endpoints tbody tr:nth-child(4) td:nth-child(3)": "Lista pagamentos do merchant filtrando por cliente.",
+        "#endpoints tbody tr:nth-child(5) td:nth-child(3)": "Autoriza um pagamento previamente criado, movendo seu estado de Pending para Authorized.",
+        "#endpoints tbody tr:nth-child(6) td:nth-child(3)": "Marca um pagamento autorizado como pago.",
+        "#endpoints tbody tr:nth-child(7) td:nth-child(3)": "Marca um pagamento pendente/autorizado como falho.",
+        "#endpoints tbody tr:nth-child(8) td:nth-child(3)": "Reembolsa um pagamento que ja foi concluido.",
 
         "#webhooks > p": "HubPay gera eventos quando o estado de um pagamento muda. Esses eventos podem ser enviados para endpoints de webhook registrados pelos merchants para permitir integracao com sistemas externos.",
 
@@ -70,7 +74,7 @@
         "#changelog article:nth-child(1) h3": "Swagger habilitado na API",
         "#changelog article:nth-child(1) p": "Adicionado Swagger UI em ambiente de desenvolvimento com metadata da versao v1 para facilitar exploracao dos endpoints.",
         "#changelog article:nth-child(2) h3": "Pagina de docs separada do app principal",
-        "#changelog article:nth-child(2) p": "Criada estrutura dedicada em docs/site, sem impacto no fluxo do frontend/console da API.",
+        "#changelog article:nth-child(2) p": "Criada estrutura dedicada em docs, sem impacto no fluxo do frontend/console da API.",
         "#changelog article:nth-child(3) h3": "Layout reformulado com base no Stitch",
         "#changelog article:nth-child(3) p": "Estrutura, hierarquia visual e secoes refeitas para espelhar o design Stitch mantendo conteudo real do HubPay.",
 
@@ -133,7 +137,7 @@
         "#payment-flow article:nth-child(3) p": "Paid represents payment completion. In this state, funds were effectively captured and the payment is considered finalized.",
 
         "#authentication h2": "Authentication",
-        "#authentication > p": "HubPay uses API key authentication to identify the merchant making the request. Every request must include the key in the Authorization header.",
+        "#authentication > p": "HubPay uses API key authentication to identify the merchant making the request. Every request must include the key in the x-api-key header.",
         "#authentication .mb-4 .text-slate-500": "Request Header",
 
         "#idempotency h2": "Idempotency",
@@ -146,8 +150,12 @@
         "#endpoints th:nth-child(3)": "Description",
         "#endpoints tbody tr:nth-child(1) td:nth-child(3)": "Creates a new payment for a merchant and starts the processing flow.",
         "#endpoints tbody tr:nth-child(2) td:nth-child(3)": "Returns details for a specific payment using its identifier.",
-        "#endpoints tbody tr:nth-child(3) td:nth-child(3)": "Lists payments for the authenticated merchant.",
-        "#endpoints tbody tr:nth-child(4) td:nth-child(3)": "Authorizes a previously created payment, moving its status from Pending to Authorized.",
+        "#endpoints tbody tr:nth-child(3) td:nth-child(3)": "Lists merchant payments filtered by status.",
+        "#endpoints tbody tr:nth-child(4) td:nth-child(3)": "Lists merchant payments filtered by customer.",
+        "#endpoints tbody tr:nth-child(5) td:nth-child(3)": "Authorizes a previously created payment, moving its status from Pending to Authorized.",
+        "#endpoints tbody tr:nth-child(6) td:nth-child(3)": "Marks an authorized payment as paid.",
+        "#endpoints tbody tr:nth-child(7) td:nth-child(3)": "Marks a pending/authorized payment as failed.",
+        "#endpoints tbody tr:nth-child(8) td:nth-child(3)": "Refunds a payment that was already completed.",
 
         "#webhooks > p": "HubPay generates events whenever a payment status changes. These events can be sent to merchant webhook endpoints for external integrations.",
 
@@ -157,7 +165,7 @@
         "#changelog article:nth-child(1) h3": "Swagger enabled in the API",
         "#changelog article:nth-child(1) p": "Swagger UI was added in development with v1 metadata to simplify endpoint exploration.",
         "#changelog article:nth-child(2) h3": "Documentation page separated from main app",
-        "#changelog article:nth-child(2) p": "A dedicated docs/site structure was created without impacting the API console frontend flow.",
+        "#changelog article:nth-child(2) p": "A dedicated docs structure was created without impacting the API console frontend flow.",
         "#changelog article:nth-child(3) h3": "Layout rebuilt based on Stitch",
         "#changelog article:nth-child(3) p": "Structure, visual hierarchy, and sections were redesigned to match Stitch while preserving HubPay real content.",
 
@@ -254,4 +262,6 @@
     });
   }
 })();
+
+
 

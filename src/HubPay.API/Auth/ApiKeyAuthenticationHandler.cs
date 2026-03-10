@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using HubPay.Domain.Repositories;
 using Microsoft.AspNetCore.Authentication;
@@ -9,6 +9,7 @@ namespace HubPay.API.Auth;
 public class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     public const string SchemeName = "ApiKey";
+    public const string ApiKeyHeaderName = "x-api-key";
 
     public ApiKeyAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -20,25 +21,27 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationS
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var authHeaderValues))
+        if (!Request.Headers.TryGetValue(ApiKeyHeaderName, out var apiKeyHeaderValues))
             return AuthenticateResult.NoResult();
 
-        var authHeader = authHeaderValues.ToString();
-        if (!authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-            return AuthenticateResult.NoResult();
-
-        var apiKeyValue = authHeader["Bearer ".Length..].Trim();
+        var apiKeyValue = apiKeyHeaderValues.ToString().Trim();
         if (string.IsNullOrWhiteSpace(apiKeyValue))
             return AuthenticateResult.Fail("API key is empty.");
 
         var apiKeyRepository = Context.RequestServices.GetRequiredService<IApiKeyRepository>();
         var apiKey = await apiKeyRepository.GetActiveByKeyAsync(apiKeyValue);
         if (apiKey is null)
+        {
+            Logger.LogWarning("Authentication failed: invalid API key.");
             return AuthenticateResult.Fail("Invalid API key.");
+        }
+
+        Context.Items["MerchantId"] = apiKey.MerchantId;
 
         var claims = new[]
         {
-            new Claim("merchantId", apiKey.MerchantId.ToString())
+            new Claim("merchantId", apiKey.MerchantId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, apiKey.MerchantId.ToString())
         };
 
         var identity = new ClaimsIdentity(claims, SchemeName);

@@ -1,4 +1,5 @@
-using HubPay.Domain.Entities;
+﻿using HubPay.Domain.Entities;
+using HubPay.Domain.Enums;
 using HubPay.Domain.Repositories;
 using HubPay.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -26,10 +27,18 @@ public class PaymentRepository : IPaymentRepository
             .SingleOrDefaultAsync(p => p.Id == id && p.MerchantId == merchantId);
     }
 
-    public async Task<IReadOnlyList<Payment>> ListByMerchantAsync(Guid merchantId)
+    public async Task<IReadOnlyList<Payment>> ListByMerchantAsync(Guid merchantId, PaymentStatus? status = null, Guid? customerId = null)
     {
-        return await _context.Payments
-            .Where(p => p.MerchantId == merchantId)
+        var query = _context.Payments
+            .Where(p => p.MerchantId == merchantId);
+
+        if (status is not null)
+            query = query.Where(p => p.Status == status.Value);
+
+        if (customerId is not null)
+            query = query.Where(p => p.CustomerId == customerId.Value);
+
+        return await query
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }

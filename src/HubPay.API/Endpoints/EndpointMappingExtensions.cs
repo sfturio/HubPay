@@ -1,9 +1,10 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using HubPay.Application.ApiKeys;
 using HubPay.Application.Customers;
 using HubPay.Application.Merchants;
 using HubPay.Application.Payments;
 using HubPay.Application.Webhooks;
+using HubPay.Domain.Enums;
 using HubPay.Domain.Repositories;
 
 namespace HubPay.API.Endpoints;
@@ -83,13 +84,25 @@ public static class EndpointMappingExtensions
             var (response, statusCode) = await service.CreateAsync(merchantId, request, idempotencyKey);
             return statusCode == StatusCodes.Status201Created
                 ? Results.Created($"/payments/{response.Id}", response)
-                : Results.StatusCode(statusCode);
+                : Results.Ok(response);
         });
 
-        payments.MapGet("/", async (HttpContext httpContext, PaymentService service) =>
+        payments.MapGet("/", async (HttpContext httpContext, string? status, Guid? customerId, PaymentService service) =>
         {
             var merchantId = GetMerchantId(httpContext);
-            var result = await service.ListByMerchantAsync(merchantId);
+
+            PaymentStatus? parsedStatus = null;
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                if (!Enum.TryParse<PaymentStatus>(status, true, out var statusValue))
+                {
+                    return Results.BadRequest(new { error = "Invalid payment status filter." });
+                }
+
+                parsedStatus = statusValue;
+            }
+
+            var result = await service.ListByMerchantAsync(merchantId, parsedStatus, customerId);
             return Results.Ok(result);
         });
 
@@ -114,24 +127,24 @@ public static class EndpointMappingExtensions
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 
-        payments.MapPost("/{id:guid}/capture", async (HttpContext httpContext, Guid id, PaymentService service) =>
+        payments.MapPost("/{id:guid}/pay", async (HttpContext httpContext, Guid id, PaymentService service) =>
         {
             var merchantId = GetMerchantId(httpContext);
             var result = await service.MarkAsPaidAsync(merchantId, id);
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 
-        payments.MapPost("/{id:guid}/refuse", async (HttpContext httpContext, Guid id, PaymentService service) =>
+        payments.MapPost("/{id:guid}/fail", async (HttpContext httpContext, Guid id, PaymentService service) =>
         {
             var merchantId = GetMerchantId(httpContext);
-            var result = await service.RefuseAsync(merchantId, id);
+            var result = await service.FailAsync(merchantId, id);
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 
-        payments.MapPost("/{id:guid}/cancel", async (HttpContext httpContext, Guid id, PaymentService service) =>
+        payments.MapPost("/{id:guid}/refund", async (HttpContext httpContext, Guid id, PaymentService service) =>
         {
             var merchantId = GetMerchantId(httpContext);
-            var result = await service.CancelAsync(merchantId, id);
+            var result = await service.RefundAsync(merchantId, id);
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 
@@ -161,11 +174,17 @@ public static class EndpointMappingExtensions
     private static Guid GetMerchantId(HttpContext httpContext)
     {
         var merchantId = GetMerchantIdOrNull(httpContext);
-        return merchantId ?? throw new InvalidOperationException("MerchantId claim not available in the current context.");
+        return merchantId ?? throw new InvalidOperationException("MerchantId not available in the current context.");
     }
 
     private static Guid? GetMerchantIdOrNull(HttpContext httpContext)
     {
+        if (httpContext.Items.TryGetValue("MerchantId", out var merchantIdItem)
+            && merchantIdItem is Guid merchantIdFromContext)
+        {
+            return merchantIdFromContext;
+        }
+
         var merchantIdClaim = httpContext.User.FindFirstValue("merchantId");
         if (Guid.TryParse(merchantIdClaim, out var merchantId))
             return merchantId;

@@ -41,7 +41,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Portfolio-friendly startup: ensure database schema is up-to-date automatically.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<HubPayDbContext>();
@@ -60,4 +59,3 @@ app.MapHubPayEndpoints();
 app.Run();
 
 public partial class Program;
-

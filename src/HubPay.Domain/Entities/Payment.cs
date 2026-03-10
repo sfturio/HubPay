@@ -1,4 +1,4 @@
-using HubPay.Domain.Enums;
+﻿using HubPay.Domain.Enums;
 using HubPay.Domain.Exceptions;
 using HubPay.Domain.ValueObjects;
 
@@ -59,15 +59,6 @@ public class Payment
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Refuse()
-    {
-        if (Status != PaymentStatus.Pending)
-            throw new DomainException("Payment cannot be refused");
-
-        Status = PaymentStatus.Refused;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
     public void MarkAsPaid()
     {
         if (Status != PaymentStatus.Authorized)
@@ -77,12 +68,21 @@ public class Payment
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Cancel()
+    public void Fail()
     {
-        if (Status == PaymentStatus.Paid)
-            throw new DomainException("Paid payment cannot be cancelled");
+        if (Status is not (PaymentStatus.Pending or PaymentStatus.Authorized))
+            throw new DomainException("Payment cannot be marked as failed from the current status");
 
-        Status = PaymentStatus.Cancelled;
+        Status = PaymentStatus.Failed;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Refund()
+    {
+        if (Status != PaymentStatus.Paid)
+            throw new DomainException("Only paid payments can be refunded");
+
+        Status = PaymentStatus.Refunded;
         UpdatedAt = DateTime.UtcNow;
     }
 }

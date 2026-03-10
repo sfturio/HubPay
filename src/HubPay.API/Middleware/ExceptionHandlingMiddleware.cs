@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using HubPay.Domain.Exceptions;
 
 namespace HubPay.API.Middleware;
@@ -23,26 +23,23 @@ public class ExceptionHandlingMiddleware
         catch (DomainException ex)
         {
             _logger.LogWarning(ex, "Domain validation error");
-            await WriteProblemAsync(context, StatusCodes.Status400BadRequest, "Business rule violation", ex.Message);
+            await WriteErrorAsync(context, StatusCodes.Status400BadRequest, ex.Message);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error");
-            await WriteProblemAsync(context, StatusCodes.Status500InternalServerError, "Unexpected error", "An unexpected error occurred.");
+            await WriteErrorAsync(context, StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
 
-    private static async Task WriteProblemAsync(HttpContext context, int statusCode, string title, string detail)
+    private static async Task WriteErrorAsync(HttpContext context, int statusCode, string message)
     {
         context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/problem+json";
+        context.Response.ContentType = "application/json";
 
         var payload = JsonSerializer.Serialize(new
         {
-            type = "about:blank",
-            title,
-            status = statusCode,
-            detail
+            error = message
         });
 
         await context.Response.WriteAsync(payload);

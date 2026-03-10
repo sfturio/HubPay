@@ -1,9 +1,10 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using HubPay.Domain.Entities;
 using HubPay.Domain.Enums;
 using HubPay.Domain.Exceptions;
 using HubPay.Domain.Repositories;
 using HubPay.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 
 namespace HubPay.Application.Payments;
 
@@ -14,19 +15,22 @@ public class PaymentService
     private readonly IIdempotencyRecordRepository _idempotencyRecordRepository;
     private readonly IWebhookRepository _webhookRepository;
     private readonly IWebhookEventRepository _webhookEventRepository;
+    private readonly ILogger<PaymentService> _logger;
 
     public PaymentService(
         IPaymentRepository paymentRepository,
         IPaymentEventRepository paymentEventRepository,
         IIdempotencyRecordRepository idempotencyRecordRepository,
         IWebhookRepository webhookRepository,
-        IWebhookEventRepository webhookEventRepository)
+        IWebhookEventRepository webhookEventRepository,
+        ILogger<PaymentService> logger)
     {
         _paymentRepository = paymentRepository;
         _paymentEventRepository = paymentEventRepository;
         _idempotencyRecordRepository = idempotencyRecordRepository;
         _webhookRepository = webhookRepository;
         _webhookEventRepository = webhookEventRepository;
+        _logger = logger;
     }
 
     public async Task<(PaymentResponse Response, int StatusCode)> CreateAsync(
@@ -44,6 +48,11 @@ public class PaymentService
                 var cachedResponse = JsonSerializer.Deserialize<PaymentResponse>(existing.ResponseBody)
                                ?? throw new DomainException("Stored idempotency response is invalid");
 
+                _logger.LogInformation(
+                    "Idempotent replay detected for merchant {MerchantId} and key {IdempotencyKey}",
+                    merchantId,
+                    idempotencyKey);
+
                 return (cachedResponse, existing.StatusCode);
             }
         }
@@ -58,6 +67,11 @@ public class PaymentService
             idempotencyKey);
 
         await _paymentRepository.AddAsync(payment);
+
+        _logger.LogInformation(
+            "Payment created with id {PaymentId} for merchant {MerchantId}",
+            payment.Id,
+            merchantId);
 
         var response = ToResponse(payment);
         var serializedResponse = JsonSerializer.Serialize(response);
@@ -85,9 +99,12 @@ public class PaymentService
         return payment is null ? null : ToResponse(payment);
     }
 
-    public async Task<IReadOnlyList<PaymentResponse>> ListByMerchantAsync(Guid merchantId)
+    public async Task<IReadOnlyList<PaymentResponse>> ListByMerchantAsync(
+        Guid merchantId,
+        PaymentStatus? status = null,
+        Guid? customerId = null)
     {
-        var payments = await _paymentRepository.ListByMerchantAsync(merchantId);
+        var payments = await _paymentRepository.ListByMerchantAsync(merchantId, status, customerId);
         return payments.Select(ToResponse).ToList();
     }
 
@@ -137,30 +154,36 @@ public class PaymentService
         return ToResponse(payment);
     }
 
-    public async Task<PaymentResponse?> RefuseAsync(Guid merchantId, Guid paymentId)
+    public async Task<PaymentResponse?> FailAsync(Guid merchantId, Guid paymentId)
     {
         var payment = await _paymentRepository.GetByIdForMerchantAsync(paymentId, merchantId);
         if (payment is null) return null;
 
         var previousStatus = payment.Status;
-        payment.Refuse();
+        payment.Fail();
 
         await _paymentRepository.UpdateAsync(payment);
-        await AddEventAndWebhooksAsync(payment, previousStatus, "payment.refused");
+
+        _logger.LogWarning(
+            "Payment {PaymentId} failed for merchant {MerchantId}",
+            paymentId,
+            merchantId);
+
+        await AddEventAndWebhooksAsync(payment, previousStatus, "payment.failed");
 
         return ToResponse(payment);
     }
 
-    public async Task<PaymentResponse?> CancelAsync(Guid merchantId, Guid paymentId)
+    public async Task<PaymentResponse?> RefundAsync(Guid merchantId, Guid paymentId)
     {
         var payment = await _paymentRepository.GetByIdForMerchantAsync(paymentId, merchantId);
         if (payment is null) return null;
 
         var previousStatus = payment.Status;
-        payment.Cancel();
+        payment.Refund();
 
         await _paymentRepository.UpdateAsync(payment);
-        await AddEventAndWebhooksAsync(payment, previousStatus, "payment.cancelled");
+        await AddEventAndWebhooksAsync(payment, previousStatus, "payment.refunded");
 
         return ToResponse(payment);
     }

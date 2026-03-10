@@ -1,4 +1,4 @@
-using HubPay.Domain.Enums;
+﻿using HubPay.Domain.Enums;
 
 namespace HubPay.Application.Payments;
 
@@ -6,8 +6,10 @@ public record CreatePaymentRequest(
     Guid CustomerId,
     decimal Amount,
     string Currency,
-    PaymentMethod PaymentMethod,
-    string Description);
+    PaymentMethod PaymentMethod = PaymentMethod.Pix,
+    string Description = "");
+
+public record ListPaymentsRequest(string? Status, Guid? CustomerId);
 
 public record PaymentResponse(
     Guid Id,

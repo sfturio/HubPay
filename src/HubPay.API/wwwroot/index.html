@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
@@ -9,10 +9,10 @@
 <body>
   <header class="nav">
     <div class="brand-wrap">
-      <div class="brand-icon">C</div>
+      <div class="brand-icon"><img src="/assets/hubpay-logo-circle.png" alt="HubPay logo" /></div>
       <div>
         <h1>HUBPAY CONSOLE</h1>
-        <p>CORE ENGINE v2.1 // EDIÇÃO EDITORIAL</p>
+        <p>CORE ENGINE v2.1 // EDIÃ‡ÃƒO EDITORIAL</p>
       </div>
     </div>
     <div class="status-pill">CONECTADO</div>
@@ -21,12 +21,12 @@
   <main class="page-grid">
     <aside class="left-stack">
       <section class="panel">
-        <h2>Configuração de Conexão</h2>
+        <h2>ConfiguraÃ§Ã£o de ConexÃ£o</h2>
         <label>URL BASE DA API<input id="apiBaseUrl" type="text" placeholder="http://localhost:5201" /></label>
         <label>ID DO MERCHANT<input id="merchantId" type="text" placeholder="mid_live_xxxxxxxx" /></label>
         <label>CHAVE SECRETA DA API<input id="apiKey" type="text" placeholder="sk_test_..." /></label>
         <div class="row-btn">
-          <button id="saveConnection" class="btn btn-primary" type="button">Salvar Sessão</button>
+          <button id="saveConnection" class="btn btn-primary" type="button">Salvar SessÃ£o</button>
           <button id="clearConnection" class="btn btn-light" type="button">Limpar</button>
         </div>
       </section>
@@ -34,7 +34,7 @@
       <section class="panel">
         <h2>Cadastro de Merchant</h2>
         <form id="createMerchantForm" class="stack-gap">
-          <label>NOME DO NEGÓCIO<input id="merchantName" required /></label>
+          <label>NOME DO NEGÃ“CIO<input id="merchantName" required /></label>
           <div class="grid-two">
             <label>DOCUMENTO<input id="merchantDocument" required placeholder="CPF/CNPJ" /></label>
             <label>E-MAIL<input id="merchantEmail" type="email" required /></label>
@@ -72,7 +72,7 @@
 
     <section class="right-stack">
       <section class="payment-hero">
-        <h2>Nova Transação de Pagamento</h2>
+        <h2>Nova TransaÃ§Ã£o de Pagamento</h2>
         <div class="payment-grid">
           <form id="createPaymentForm" class="stack-gap">
             <div class="grid-two">
@@ -82,15 +82,15 @@
             <div class="grid-three">
               <label>VALOR TOTAL (DINHEIRO)<input id="paymentAmount" type="number" step="0.01" min="0.01" placeholder="ex.: 49.90" required /></label>
               <label>MOEDA<select id="paymentCurrency" required><option value="BRL" selected>BRL</option><option value="USD">USD</option><option value="EUR">EUR</option></select></label>
-              <label>MÉTODO
+              <label>MÃ‰TODO
                 <select id="paymentMethod">
-                  <option value="1">Cartão de Crédito</option>
+                  <option value="1">CartÃ£o de CrÃ©dito</option>
                   <option value="2">Pix</option>
                   <option value="3">Boleto</option>
                 </select>
               </label>
             </div>
-            <label>DESCRIÇÃO (O QUE ESTÁ SENDO COBRADO)<input id="paymentDescription" placeholder="ex.: camisa + frete" required /></label>
+            <label>DESCRIÃ‡ÃƒO (O QUE ESTÃ SENDO COBRADO)<input id="paymentDescription" placeholder="ex.: camisa + frete" required /></label>
           </form>
           <button form="createPaymentForm" class="execute-btn" type="submit">EXECUTAR PAGAMENTO</button>
         </div>
@@ -98,7 +98,7 @@
 
       <section class="panel panel-table">
         <div class="table-header">
-          <h2>Transações em Tempo Real</h2>
+          <h2>TransaÃ§Ãµes em Tempo Real</h2>
           <div class="stream">TRANSMITINDO...</div>
         </div>
         <div class="toolbar">
@@ -108,7 +108,7 @@
       </section>
 
       <section class="panel panel-customer">
-        <h2>Cadastro Rápido de Cliente</h2>
+        <h2>Cadastro RÃ¡pido de Cliente</h2>
         <form id="createCustomerForm" class="grid-three">
           <label>NOME<input id="customerName" required /></label>
           <label>DOCUMENTO<input id="customerDocument" required /></label>
@@ -131,3 +131,4 @@
   <script src="/app.js" defer></script>
 </body>
 </html>
+

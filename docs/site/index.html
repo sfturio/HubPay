@@ -39,12 +39,19 @@
         <span class="font-bold text-lg">HubPay</span>
       </a>
 
-      <button id="menuToggle" class="lg:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700" type="button" aria-controls="leftSidebar" aria-expanded="false">Menu</button>
+      <div class="flex items-center gap-2">
+        <button id="langToggle" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 px-2.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100" aria-label="Switch language">
+          <span class="material-symbols-outlined text-base">translate</span>
+          <span id="langLabel">EN</span>
+        </button>
 
-      <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600">
-        <a href="#changelog" class="hover:text-primary">Changelog</a>
-        <a href="#contact" class="hover:text-primary">Contato</a>
-      </nav>
+        <button id="menuToggle" class="lg:hidden inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700" type="button" aria-controls="leftSidebar" aria-expanded="false">Menu</button>
+
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600">
+          <a href="#changelog" class="hover:text-primary">Changelog</a>
+          <a href="#contact" class="hover:text-primary">Contato</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -86,7 +93,7 @@
         <section id="overview" class="mb-20 scroll-mt-24">
           <div class="mb-4 flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wide">
             <span class="h-px w-8 bg-primary"></span>
-            Introduction
+            <span id="introLabel">Introduction</span>
           </div>
           <h1 class="mb-6 text-4xl lg:text-5xl font-extrabold tracking-tight">HubPay Overview</h1>
           <p class="text-xl leading-relaxed text-slate-700">HubPay e um mini gateway de pagamentos criado para estudar arquitetura backend e padroes comuns em APIs de pagamentos. O projeto simula como sistemas de pagamento organizam autenticacao, criacao de pagamentos e mudancas de estado. O foco e demonstrar boas praticas de backend de forma clara e objetiva.</p>
@@ -300,9 +307,9 @@
     <aside class="hidden xl:block w-80 border-l border-slate-200 p-8 bg-white">
       <div class="rounded-xl bg-white p-6 border border-slate-200 text-center shadow-sm sticky top-24">
         <img src="./assets/hubpay-logo-circle.png" alt="HubPay" class="h-14 w-14 mx-auto mb-4 rounded-lg object-cover" />
-        <h4 class="font-bold text-lg mb-2">Testar Aplicacao</h4>
-        <p class="text-xs text-slate-500 mb-6 leading-relaxed">Acesse nosso ambiente Sandbox para simular transacoes e validar sua integracao.</p>
-        <a href="/" class="inline-flex w-full justify-center rounded-lg bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-orange-600 transition-colors">Ir para Sandbox</a>
+        <h4 class="font-bold text-lg mb-2">Live Demo</h4>
+        <p class="text-xs text-slate-500 mb-6 leading-relaxed">Acesse a live demo para explorar os fluxos do HubPay em execucao real.</p>
+        <a href="https://hubpay.onrender.com/" target="_blank" rel="noreferrer noopener" class="inline-flex w-full justify-center rounded-lg bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-orange-600 transition-colors">Ir para Live Demo</a>
       </div>
     </aside>
   </div>
@@ -320,5 +327,9 @@
   <script src="./app.js" defer></script>
 </body>
 </html>
+
+
+
+
 
 

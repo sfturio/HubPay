@@ -306,7 +306,22 @@ function t(key, values = {}) {
 
 function setText(selector, text) {
   const el = document.querySelector(selector);
-  if (el) el.textContent = text;
+  if (!el) return;
+
+  if (el.tagName === "LABEL") {
+    const directControls = Array.from(el.children).filter((child) =>
+      ["INPUT", "SELECT", "TEXTAREA"].includes(child.tagName)
+    );
+
+    if (directControls.length > 0) {
+      directControls.forEach((control) => control.remove());
+      el.textContent = text;
+      directControls.forEach((control) => el.appendChild(control));
+      return;
+    }
+  }
+
+  el.textContent = text;
 }
 
 function setAttr(selector, attrs) {

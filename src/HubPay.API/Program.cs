@@ -10,7 +10,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new()
+    {
+        Title = "HubPay API",
+        Version = "v1",
+        Description = "Mini payment gateway for studying backend architecture"
+    });
+});
 
 builder.Services
     .AddAuthentication(ApiKeyAuthenticationHandler.SchemeName)
@@ -52,3 +60,4 @@ app.MapHubPayEndpoints();
 app.Run();
 
 public partial class Program;
+

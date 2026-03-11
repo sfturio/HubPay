@@ -1,11 +1,19 @@
-# HubPay
+# HubPay - .NET 10 + Clean Architecture
 
-HubPay is a study project that simulates a mini payment gateway using .NET 10 and Clean Architecture.
+---
 
-The goal is to keep the backend clean, understandable, and portfolio-ready.
+![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-Minimal%20API-5C2D91?style=flat-square)
+![EF Core](https://img.shields.io/badge/EF%20Core-ORM-6DB33F?style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-22C55E?style=flat-square)
 
-## Documentation
-- https://sfturio.github.io/HubPay/
+A modular payment gateway backend built with .NET 10 and Clean Architecture, designed for clarity, scalability, and portfolio-ready code quality.
+
+- **Technical Documentation:** https://sfturio.github.io/HubPay/
+- **Repository:** https://github.com/sfturio/HubPay
+
+---
 
 ## Tech Stack
 - .NET 10

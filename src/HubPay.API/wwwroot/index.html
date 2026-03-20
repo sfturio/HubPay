@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HubPay | Gestao simples de clientes e cobrancas</title>
+  <title>HubPay | Gestão simples de clientes e cobranças</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -15,12 +15,12 @@
       <div class="brand-mark">HP</div>
       <div>
         <p class="brand-name">HubPay</p>
-        <p class="brand-sub">Sistema simples para organizar clientes, cobrancas e pagamentos</p>
+        <p class="brand-sub">Sistema simples para organizar clientes, cobranças e pagamentos</p>
       </div>
     </div>
     <div class="topbar-actions">
       <button id="langToggle" class="btn btn-ghost" type="button">EN</button>
-      <a class="btn btn-ghost" href="https://sfturio.github.io/HubPay/" target="_blank" rel="noreferrer noopener">Documentacao</a>
+      <a class="btn btn-ghost" href="https://sfturio.github.io/HubPay/" target="_blank" rel="noreferrer noopener">Documentação</a>
     </div>
   </header>
 
@@ -28,7 +28,7 @@
     <aside class="side-panel">
       <section class="card">
         <h2>Conta da loja</h2>
-        <p class="muted">Esses dados conectam sua conta a API.</p>
+        <p class="muted">Esses dados conectam sua conta à API.</p>
 
         <label>URL da API
           <input id="apiBaseUrl" type="text" placeholder="http://localhost:5201" />
@@ -40,14 +40,14 @@
           <input id="apiKey" type="text" placeholder="sk_test_..." />
         </label>
         <div class="inline-actions">
-          <button id="saveConnection" class="btn btn-secondary" type="button">Salvar conexao</button>
+          <button id="saveConnection" class="btn btn-secondary" type="button">Salvar conexão</button>
           <button id="clearConnection" class="btn btn-ghost" type="button">Limpar</button>
         </div>
       </section>
 
       <section class="card">
         <h2>Criar conta da loja</h2>
-        <p class="muted">Passo inicial para liberar clientes e cobrancas.</p>
+        <p class="muted">Passo inicial para liberar clientes e cobranças.</p>
         <form id="createMerchantForm" class="stack">
           <label>Nome da loja
             <input id="merchantName" required />
@@ -81,43 +81,43 @@
         <div class="hero-head">
           <div>
             <p class="eyebrow">Dashboard</p>
-            <h1>Visao rapida do mes</h1>
+            <h1>Visão rápida do mês</h1>
           </div>
           <div class="hero-actions">
-            <button id="newChargeHero" class="btn btn-primary" type="button">Nova cobranca</button>
+            <button id="newChargeHero" class="btn btn-primary" type="button">Nova cobrança</button>
             <button id="newCustomerHero" class="btn btn-secondary" type="button">Novo cliente</button>
           </div>
         </div>
 
         <div class="stats-grid">
           <article class="stat">
-            <p class="stat-label">Resumo do mes</p>
-            <p id="monthSummary" class="stat-value">0 cobrancas</p>
-            <p id="monthSummaryHint" class="stat-note">Sem movimentacao no periodo.</p>
+            <p class="stat-label">Resumo do mês</p>
+            <p id="monthSummary" class="stat-value">0 cobranças</p>
+            <p id="monthSummaryHint" class="stat-note">Sem movimentação no período.</p>
           </article>
           <article class="stat">
             <p class="stat-label">Total recebido</p>
             <p id="totalReceived" class="stat-value">R$ 0,00</p>
-            <p class="stat-note">Somente cobrancas pagas no mes.</p>
+            <p class="stat-note">Somente cobranças pagas no mês.</p>
           </article>
           <article class="stat">
-            <p class="stat-label">Cobrancas pendentes</p>
+            <p class="stat-label">Cobranças pendentes</p>
             <p id="pendingCharges" class="stat-value">0</p>
-            <p class="stat-note">Aguardando confirmacao.</p>
+            <p class="stat-note">Aguardando confirmação.</p>
           </article>
           <article class="stat">
-            <p class="stat-label">Cobrancas atrasadas</p>
+            <p class="stat-label">Cobranças atrasadas</p>
             <p id="overdueCharges" class="stat-value">0</p>
-            <p class="stat-note">Pendentes ha mais de 7 dias.</p>
+            <p class="stat-note">Pendentes há mais de 7 dias.</p>
           </article>
         </div>
 
         <div class="customers-preview">
           <div class="section-head">
             <h3>Clientes recentes</h3>
-            <button id="refreshDashboard" class="btn btn-ghost" type="button">Atualizar visao</button>
+            <button id="refreshDashboard" class="btn btn-ghost" type="button">Atualizar visão</button>
           </div>
-          <div id="recentCustomers" class="empty-state">Cadastre seu primeiro cliente para comecar.</div>
+          <div id="recentCustomers" class="empty-state">Cadastre seu primeiro cliente para começar.</div>
         </div>
       </section>
 
@@ -143,8 +143,8 @@
 
       <section id="chargesSection" class="card">
         <div class="section-head">
-          <h2>Cobrancas</h2>
-          <button id="listPayments" class="btn btn-ghost" type="button">Atualizar cobrancas</button>
+          <h2>Cobranças</h2>
+          <button id="listPayments" class="btn btn-ghost" type="button">Atualizar cobranças</button>
         </div>
         <form id="createPaymentForm" class="form-grid payment-form">
           <label>ID do cliente
@@ -162,13 +162,13 @@
           </label>
           <label>Forma de pagamento
             <select id="paymentMethod">
-              <option value="1">Cartao de credito</option>
+              <option value="1">Cartão de crédito</option>
               <option value="2">Pix</option>
               <option value="3">Boleto</option>
             </select>
           </label>
-          <label class="span-2">Descricao da cobranca
-            <input id="paymentDescription" placeholder="Ex.: Servico de manutencao" required />
+          <label class="span-2">Descrição da cobrança
+            <input id="paymentDescription" placeholder="Ex.: Serviço de manutenção" required />
           </label>
           <label>Idempotency-Key (opcional)
             <input id="idempotencyKey" placeholder="uuid-v4" />
@@ -179,14 +179,14 @@
       </section>
 
       <section id="historySection" class="card">
-        <h2>Pagamentos e historico</h2>
-        <p class="muted">Veja os eventos da cobranca selecionada para acompanhar a evolucao do status.</p>
-        <pre id="paymentEventsOutput" class="event-box">Selecione uma cobranca e clique em "Historico".</pre>
+        <h2>Pagamentos e histórico</h2>
+        <p class="muted">Veja os eventos da cobrança selecionada para acompanhar a evolução do status.</p>
+        <pre id="paymentEventsOutput" class="event-box">Selecione uma cobrança e clique em "Histórico".</pre>
       </section>
 
       <details class="card">
-        <summary>Integracoes avancadas (opcional)</summary>
-        <p class="muted">Webhooks sao tecnicos e nao sao obrigatorios para usar o sistema no dia a dia.</p>
+        <summary>Integrações avançadas (opcional)</summary>
+        <p class="muted">Webhooks são técnicos e não são obrigatórios para usar o sistema no dia a dia.</p>
         <form id="createWebhookForm" class="inline-form">
           <input id="webhookUrl" type="url" placeholder="https://seu-endpoint.com/webhook" required />
           <button class="btn btn-secondary" type="submit">Adicionar webhook</button>
@@ -200,7 +200,7 @@
   </main>
 
   <footer class="footer">
-    <p>HubPay 2026 | Projeto de portfolio (junior-pleno) construido sobre a base HubPay.</p>
+    <p>HubPay 2026 | Projeto de portfólio (júnior-pleno) construído sobre a base HubPay.</p>
   </footer>
 
   <script src="/app.js" defer></script>

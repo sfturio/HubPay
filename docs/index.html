@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HubPay | Documentacao</title>
+  <title>HubPay | Documentação</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -64,7 +64,7 @@
         <div class="grid h-9 w-9 place-items-center rounded-lg bg-brand text-sm font-extrabold text-white">HP</div>
         <div>
           <p class="text-sm font-extrabold leading-none">HubPay</p>
-          <p class="text-xs text-slate-500">Documentacao do produto e da API</p>
+          <p class="text-xs text-slate-500">Documentação do produto e da API</p>
         </div>
       </a>
       <div class="flex items-center gap-2">
@@ -78,8 +78,8 @@
   <div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 py-6 lg:grid-cols-[240px,1fr]">
     <aside id="sidebar" class="surface-muted hidden rounded-xl border border-slate-200 bg-white p-4 lg:block">
       <nav class="space-y-1 text-sm">
-        <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#overview">Visao geral</a>
-        <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#product">Direcao de produto</a>
+        <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#overview">Visão geral</a>
+        <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#product">Direção de produto</a>
         <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#architecture">Arquitetura</a>
         <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#endpoints">Endpoints</a>
         <a class="block rounded-md px-3 py-2 hover:bg-slate-100" href="#flows">Fluxo principal</a>
@@ -90,26 +90,26 @@
     <main class="space-y-6">
       <section id="overview" class="surface rounded-2xl border border-slate-200 bg-white p-6">
         <p class="mb-2 text-xs font-extrabold uppercase tracking-widest text-brand">HubPay</p>
-        <h1 class="mb-3 text-3xl font-extrabold">Sistema simples para gestao de clientes, cobrancas e pagamentos</h1>
-        <p class="text-slate-700">HubPay e a nova apresentacao do projeto HubPay. O foco agora e deixar claro, na primeira abertura, como cadastrar clientes, criar cobrancas e acompanhar recebimentos sem friccao.</p>
+        <h1 class="mb-3 text-3xl font-extrabold">Sistema simples para gestão de clientes, cobranças e pagamentos</h1>
+        <p class="text-slate-700">HubPay é a nova apresentação do projeto HubPay. O foco agora é deixar claro, na primeira abertura, como cadastrar clientes, criar cobranças e acompanhar recebimentos sem fricção.</p>
       </section>
 
       <section id="product" class="surface rounded-2xl border border-slate-200 bg-white p-6">
-        <h2 class="mb-4 text-2xl font-bold">Direcao de produto</h2>
+        <h2 class="mb-4 text-2xl font-bold">Direção de produto</h2>
         <div class="grid gap-3 md:grid-cols-2">
           <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <h3 class="mb-2 font-bold">Publico ideal</h3>
-            <p class="text-sm text-slate-700">Pequenos negocios, freelancers, autonomos e profissionais que precisam controlar clientes e recebimentos sem complexidade.</p>
+            <h3 class="mb-2 font-bold">Público ideal</h3>
+            <p class="text-sm text-slate-700">Pequenos negócios, freelancers, autônomos e profissionais que precisam controlar clientes e recebimentos sem complexidade.</p>
           </article>
           <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <h3 class="mb-2 font-bold">Experiencia principal</h3>
-            <p class="text-sm text-slate-700">Dashboard com resumo do mes, status das cobrancas, clientes recentes e atalhos para nova cobranca e novo cliente.</p>
+            <h3 class="mb-2 font-bold">Experiência principal</h3>
+            <p class="text-sm text-slate-700">Dashboard com resumo do mês, status das cobranças, clientes recentes e atalhos para nova cobrança e novo cliente.</p>
           </article>
         </div>
       </section>
 
       <section id="architecture" class="surface rounded-2xl border border-slate-200 bg-white p-6">
-        <h2 class="mb-4 text-2xl font-bold">Arquitetura tecnica</h2>
+        <h2 class="mb-4 text-2xl font-bold">Arquitetura técnica</h2>
         <p class="mb-4 text-slate-700">A arquitetura original foi preservada: API + Application + Domain + Infrastructure.</p>
         <div class="overflow-x-auto rounded-xl border border-slate-200">
           <table class="w-full min-w-[520px] text-left text-sm">
@@ -120,10 +120,10 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr><td class="px-4 py-3 font-mono">HubPay.Domain</td><td class="px-4 py-3">Entidades, regras de negocio e value objects.</td></tr>
-              <tr><td class="px-4 py-3 font-mono">HubPay.Application</td><td class="px-4 py-3">Casos de uso, DTOs e servicos de aplicacao.</td></tr>
-              <tr><td class="px-4 py-3 font-mono">HubPay.Infrastructure</td><td class="px-4 py-3">Persistencia com EF Core e repositorios.</td></tr>
-              <tr><td class="px-4 py-3 font-mono">HubPay.API</td><td class="px-4 py-3">Minimal API, autenticacao e console web.</td></tr>
+              <tr><td class="px-4 py-3 font-mono">HubPay.Domain</td><td class="px-4 py-3">Entidades, regras de negócio e value objects.</td></tr>
+              <tr><td class="px-4 py-3 font-mono">HubPay.Application</td><td class="px-4 py-3">Casos de uso, DTOs e serviços de aplicação.</td></tr>
+              <tr><td class="px-4 py-3 font-mono">HubPay.Infrastructure</td><td class="px-4 py-3">Persistência com EF Core e repositórios.</td></tr>
+              <tr><td class="px-4 py-3 font-mono">HubPay.API</td><td class="px-4 py-3">Minimal API, autenticação e console web.</td></tr>
             </tbody>
           </table>
         </div>
@@ -145,7 +145,7 @@ GET /customers
 GET /customers/{id}</pre>
           </div>
           <div>
-            <p class="mb-2 font-bold">Cobrancas e pagamentos</p>
+            <p class="mb-2 font-bold">Cobranças e pagamentos</p>
             <pre class="rounded-lg border border-slate-200 bg-slate-50 p-3 font-mono text-xs">POST /payments
 GET /payments
 GET /payments/{id}
@@ -169,9 +169,9 @@ POST /webhooks/{id}/disable</pre>
         <ol class="list-decimal space-y-2 pl-6 text-slate-700">
           <li>Crie a conta da loja e gere a chave de API.</li>
           <li>Cadastre clientes.</li>
-          <li>Crie cobrancas por cliente.</li>
-          <li>Acompanhe o status da cobranca (pendente, em analise, pago, recusado, cancelado).</li>
-          <li>Use o historico de eventos para auditar alteracoes.</li>
+          <li>Crie cobranças por cliente.</li>
+          <li>Acompanhe o status da cobrança (pendente, em análise, pago, recusado, cancelado).</li>
+          <li>Use o histórico de eventos para auditar alterações.</li>
         </ol>
       </section>
 
@@ -189,7 +189,7 @@ POST /webhooks/{id}/disable</pre>
   </div>
 
   <footer class="mx-auto max-w-6xl px-4 pb-8 text-xs text-slate-500">
-    <p>© 2026 HubPay. Projeto de portfolio com base tecnica HubPay.</p>
+    <p>© 2026 HubPay. Projeto de portfólio com base técnica HubPay.</p>
   </footer>
 
   <script src="./app.js" defer></script>

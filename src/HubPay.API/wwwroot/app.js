@@ -670,8 +670,9 @@ async function bootstrap() {
     await Promise.allSettled([listCustomers(), listPayments(), listWebhooks()]);
   }
 
-  log("RecebeLeve pronto para uso.");
+  log("HubPay pronto para uso.");
   toast("Painel carregado", "info");
 }
 
 bootstrap();
+

@@ -1,9 +1,9 @@
-# Como usar o RecebeLeve
+# Como usar o HubPay
 
 Guia rapido para abrir, testar e apresentar o projeto de forma clara, sem foco tecnico excessivo.
 
-## O que e o RecebeLeve
-RecebeLeve e um sistema simples para organizar:
+## O que e o HubPay
+HubPay e um sistema simples para organizar:
 - clientes
 - cobrancas
 - pagamentos
@@ -64,3 +64,4 @@ Campo opcional para evitar duplicidade quando a mesma requisicao e reenviada.
 - README principal: `README.md`
 - documentacao web: `docs/index.html`
 - status atual do projeto: `docs/STATUS_PROJETO_FINAL.md`
+

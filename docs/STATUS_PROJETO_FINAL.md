@@ -1,4 +1,4 @@
-# RecebeLeve - Status do projeto
+# HubPay - Status do projeto
 
 Gerado em: 2026-03-20
 
@@ -6,7 +6,7 @@ Gerado em: 2026-03-20
 O projeto foi reposicionado de "gateway tecnico" para "sistema simples de gestao de clientes, cobrancas e pagamentos", mantendo a mesma stack e arquitetura.
 
 ## Mudancas principais aplicadas
-- Rebranding visual e textual para **RecebeLeve**.
+- Rebranding visual e textual para **HubPay**.
 - Console web reformulado com foco em produto:
   - Dashboard
   - Clientes
@@ -48,3 +48,4 @@ O projeto foi reposicionado de "gateway tecnico" para "sistema simples de gestao
 
 ## Resultado
 A versao atual transmite uma proposta clara em poucos segundos e fica mais adequada para portfolio junior-pleno sem perder consistencia tecnica.
+

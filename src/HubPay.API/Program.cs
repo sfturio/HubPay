@@ -1,4 +1,4 @@
-﻿using HubPay.API.Auth;
+using HubPay.API.Auth;
 using HubPay.API.Endpoints;
 using HubPay.API.Middleware;
 using HubPay.Application;
@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new()
     {
-        Title = "RecebeLeve API",
+        Title = "HubPay API",
         Version = "v1",
         Description = "API para gestao simples de clientes, cobrancas e pagamentos"
     });
@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Swagger
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "RecebeLeve API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "HubPay API v1");
         options.RoutePrefix = "swagger";
     });
 }
@@ -59,4 +59,5 @@ app.MapHubPayEndpoints();
 app.Run();
 
 public partial class Program;
+
 

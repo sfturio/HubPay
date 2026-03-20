@@ -1,11 +1,11 @@
-# RecebeLeve (base tecnica HubPay)
+# HubPay (base tecnica HubPay)
 
 ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-Minimal%20API-5C2D91?style=flat-square)
 ![EF Core](https://img.shields.io/badge/EF%20Core-ORM-6DB33F?style=flat-square)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql&logoColor=white)
 
-RecebeLeve e um sistema simples para organizar **clientes, cobrancas e pagamentos**.
+HubPay e um sistema simples para organizar **clientes, cobrancas e pagamentos**.
 
 O projeto foi reposicionado para um uso mais direto (pequenos negocios, freelancers e autonomos), mantendo a base tecnica robusta da arquitetura em camadas.
 
@@ -116,3 +116,4 @@ Com ambiente de desenvolvimento, o Swagger fica em `/swagger`.
 ## Build e testes
 - `dotnet build HubPay.slnx`
 - `dotnet test HubPay.slnx`
+

@@ -1,7 +1,7 @@
-# Memoria do projeto RecebeLeve
+# Memoria do projeto HubPay
 
 ## Posicionamento atual
-RecebeLeve e a nova apresentacao do projeto HubPay.
+HubPay e a nova apresentacao do projeto HubPay.
 
 Objetivo de produto:
 - facilitar o controle de clientes
@@ -55,5 +55,6 @@ Ao abrir o sistema, o usuario entende em poucos segundos:
 4. como acompanhar status e recebimentos
 
 ## Nota de branding
-- Marca de produto: **RecebeLeve**
+- Marca de produto: **HubPay**
 - Base tecnica/namespace: **HubPay** (mantida para preservar estrutura e historico do repositorio)
+
